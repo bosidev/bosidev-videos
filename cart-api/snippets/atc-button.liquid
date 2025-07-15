@@ -1,0 +1,51 @@
+{%- doc -%}
+  Renders an atc button for a product. This is also conected to the custom cart drawer.
+
+  @param {object} product - The product to render the atc button for
+
+  @example
+  {% render 'atc-button', product: product %}
+{%- enddoc -%}
+
+<atc-button>
+  {% form 'product', product %}
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    <input type="hidden" name="quantity" value="1">
+
+    <button type="submit" class="button">Add to cart</button>
+  {% endform %}
+</atc-button>
+
+{% # Adding multiple items %}
+
+{% comment %}
+
+{% form 'product', product %}
+  <input type="hidden" name="items[0][id]" value="ONE VARIANT">
+  <input type="hidden" name="items[0][quantity]" value="1">
+  <input type="hidden" name="items[1][id]" value="SECOND VARIANT">
+  <input type="hidden" name="items[2][quantity]" value="1">
+
+  <button type="submit" class="button">Add to cart</button>
+{% endform %}
+
+{% endcomment %}
+
+{% # Variant selector %}
+
+{% comment %}
+
+{% form 'product', product %}
+  {% if product.has_only_default_variant %}
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+  {% else %}
+    <select name="id">
+      {% for variant in product.variants %}
+        <option value="{{ variant.id }}">{{ variant.title }}</option>
+      {% endfor %}
+    </select>
+  {% endif %}
+  <button type="submit" class="button">Add to cart</button>
+{% endform %}
+
+{% endcomment %}

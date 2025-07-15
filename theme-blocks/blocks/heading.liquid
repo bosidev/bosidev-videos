@@ -1,0 +1,82 @@
+<style>
+  #shopify-block-{{ block.id }} {{ block.settings.tag }} {
+    {%- if block.settings.text_color != 'rgba(0,0,0,0)' -%}
+      color: {{ block.settings.text_color }};
+    {%- endif -%}
+    {%- if block.settings.background_color != 'rgba(0,0,0,0)' -%}
+      background-color: {{ block.settings.background_color }};
+    {%- endif -%}
+  }
+
+  .heading-left {
+    text-align: left;
+  }
+
+  .heading-center {
+    text-align: center;
+  }
+
+  .heading-right {
+    text-align: right;
+  }
+</style>
+
+<div class="heading-block heading-{{ block.settings.alignment }}">
+  <{{ block.settings.tag }}>{{ block.settings.text }}</{{ block.settings.tag }}>
+</div>
+
+{% schema %}
+{
+  "name": "Heading",
+  "settings": [
+    {
+      "type": "select",
+      "id": "tag",
+      "label": "Tag",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "Alignment"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Heading",
+      "settings": {
+        "text": "Heading"
+      }
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,325 @@
+/* You need to insert this css somewhere in the theme, for example in the theme.liquid file */
+/* <link rel="stylesheet" href="{{ 'cart-api.css' | asset_url }}"> */
+
+/* MISC */
+
+.link--no-underline {
+  text-decoration: none;
+}
+
+.link--no-underline:hover {
+  text-decoration: none;
+}
+
+.cart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+
+.cart-container h2,
+.cart-container h3 {
+  margin: 0;
+}
+
+.cart-container > div {
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cart-line-item__image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  border-bottom: none !important;
+}
+
+.cart-header h1 {
+  margin: 0 !important;
+}
+
+.cart-line-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.cart-line-item__info,
+.cart-line-item__actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.quantity {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cart-line-item__actions .quantity {
+  height: 50px;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.quantity__button {
+  height: 100%;
+}
+
+.item-actions {
+  display: flex;
+  gap: 20px;
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.cart-total__info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.cart-items {
+  display: grid;
+  gap: 20px;
+}
+
+.cart-container--empty .cart-items,
+.cart-container--empty .cart-total {
+  display: none;
+}
+
+.cart-clear-cart,
+.cart-note {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+  max-width: none !important;
+}
+
+.cart-note form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cart-shipping {
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cart-shipping .fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.cart-shipping .field {
+  max-width: 200px;
+}
+
+.shipping-results h3 {
+  margin-bottom: 10px;
+}
+
+.shipping-results {
+  margin-bottom: 20px;
+}
+
+.cart-empty {
+  border-bottom: none !important;
+}
+
+/* DRAWER */
+
+.custom-cart-drawer-open {
+  overflow: hidden;
+}
+
+.custom-cart-drawer-container {
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  transition:
+    visibility 0.3s ease-in-out,
+    opacity 0.3s ease-in-out;
+}
+
+.custom-cart-drawer-container[open] {
+  visibility: visible;
+  opacity: 1;
+}
+
+.custom-cart-drawer {
+  padding: 10px;
+}
+
+.custom-cart-drawer-overlay {
+  display: block !important;
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition:
+    visibility 0.3s ease-in-out,
+    opacity 0.3s ease-in-out;
+}
+
+.custom-cart-drawer-container[open] .custom-cart-drawer-overlay {
+  visibility: visible;
+  opacity: 1;
+}
+
+.custom-cart-drawer {
+  position: fixed;
+  background-color: white;
+  z-index: 10;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 400px;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.custom-cart-drawer-container[open] .custom-cart-drawer {
+  transform: translateX(0);
+}
+
+.custom-cart-drawer__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.custom-cart-drawer__header h2,
+.custom-cart-drawer__header h3 {
+  margin: 0;
+}
+
+.custom-cart-drawer__close {
+  margin-bottom: 0;
+}
+
+.custom-cart-drawer__item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.custom-cart-drawer__item-info-wrapper {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.custom-cart-drawer__items {
+  display: grid;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.custom-cart-drawer__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.custom-cart-drawer__item-title {
+  margin: 0;
+}
+
+.custom-cart-drawer__item-image {
+  flex-shrink: 0;
+  width: 75px;
+  height: 75px;
+}
+
+.custom-cart-drawer__footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.custom-cart-drawer__footer .button {
+  width: 100%;
+}
+
+.custom-cart-drawer .quantity {
+  min-height: 0;
+}
+
+.custom-cart-drawer__item-actions .link {
+  width: 100%;
+  text-align: right;
+}
+
+.custom-cart-drawer__note {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.custom-cart-drawer .cart-empty {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+}
+
+.cart-item-count {
+  background-color: #000;
+  color: #ffffff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

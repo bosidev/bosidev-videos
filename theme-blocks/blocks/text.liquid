@@ -1,0 +1,68 @@
+<style>
+  #shopify-block-{{ block.id }} {
+    {%- if block.settings.text_color != 'rgba(0,0,0,0)' -%}
+      color: {{ block.settings.text_color }};
+    {%- endif -%}
+    {%- if block.settings.background_color != 'rgba(0,0,0,0)' -%}
+      background-color: {{ block.settings.background_color }};
+    {%- endif -%}
+  }
+  
+  .text-left {
+    text-align: left;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .text-right {
+    text-align: right;
+  }
+</style>
+
+<div class="text-block text-{{ block.settings.alignment }}">
+  {{ block.settings.text }}
+</div>
+
+{% schema %}
+{
+  "name": "Text",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "Alignment"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text",
+      "settings": {
+        "text": "Hello, world!"
+      }
+    }
+  ]
+}
+{% endschema %}

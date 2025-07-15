@@ -1,0 +1,8 @@
+{% comment %}
+  This is a custom cart count that will be used to display the number of items in the cart
+  You can use this in the bundle section rendering to update the cart count in the header
+{% endcomment %}
+
+<span class="cart-item-count">
+  {{ cart.items.size }}
+</span>

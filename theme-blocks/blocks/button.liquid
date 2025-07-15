@@ -1,0 +1,28 @@
+
+<div style="text-align: center; margin-top: 2rem;">
+  <button class="button" {{ block.shopify_attributes }}>
+    {{ block.settings.text }}
+  </button>
+</div>
+
+{% schema %}
+{
+  "name": "Button",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+  ],
+  "presets": [
+    {
+      "name": "Button",
+      "settings": {
+        "text": "Show more"
+      }
+    }
+  ]
+}
+{% endschema %}

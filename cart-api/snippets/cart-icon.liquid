@@ -1,0 +1,15 @@
+{%- doc -%}
+  Renders an icon to open the cart drawer
+
+  @example
+  {% render 'cart-icon' %}
+{%- enddoc -%}
+
+<span class="header-actions__action" id="cart-icon-bubble">
+  {{- 'icon-cart.svg' | inline_asset_content -}}
+  <span class="cart-item-count">{{ cart.items.size }}</span>
+</span>
+
+{% if settings.cart_type == 'drawer' and template.name != 'cart' %}
+  {% render 'custom-cart-drawer' %}
+{% else %}

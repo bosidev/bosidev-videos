@@ -1,0 +1,122 @@
+{%- doc -%}
+  Renders the custom cart drawer
+
+  @example
+  {% render 'custom-cart-drawer' %}
+{%- enddoc -%}
+
+<script src="{{ 'custom-cart-drawer.js'| asset_url }}" defer></script>
+
+{% liquid
+  assign discount_codes = cart.cart_level_discount_applications | where: 'type', 'discount_code' | map: 'title'
+  for item in cart.items
+    for allocation in item.line_level_discount_allocations
+      if allocation.discount_application.type == 'discount_code'
+        assign discount_codes = item.line_level_discount_allocations | slice: forloop.index0 | map: 'discount_application' | map: 'title' | concat: discount_codes
+      endif
+    endfor
+  endfor
+
+  assign discount_codes = discount_codes | uniq
+%}
+
+<custom-cart-drawer data-open-trigger="cart-icon-bubble" class="custom-cart-drawer-container">
+  <div id="CustomCartOverlay" class="custom-cart-drawer-overlay"></div>
+  <div class="custom-cart-drawer">
+    <div class="custom-cart-drawer__header">
+      <h2>Cart</h2>
+
+      <button data-close class="link custom-cart-drawer__close link-with-icon button button-unstyled">
+        {{ "icon-close.svg" | inline_asset_content }}
+      </button>
+    </div>
+
+    <div class="custom-cart-drawer__inner">
+      {% if cart.items.size > 0 %}
+        <div class="custom-cart-drawer__content">
+          <div class="custom-cart-drawer__items">
+            {% for item in cart.items %}
+              <div class="custom-cart-drawer__item" data-line="{{ forloop.index }}">
+                <div class="custom-cart-drawer__item-info-wrapper">
+                  <div class="custom-cart-drawer__item-image">
+                    {{ item.image | image_url: width: 75 | image_tag }}
+                  </div>
+
+                  <div class="custom-cart-drawer__item-info">
+                    <h5 class="custom-cart-drawer__item-title">{{ item.product.title }}</h5>
+                    <span class="custom-cart-drawer__item-price">{{ item.price | money }}</span>
+                  </div>
+                </div>
+
+                <cart-actions data-line="{{ forloop.index }}">
+                  <div class="custom-cart-drawer__item-actions">
+                    <div class="quantity quantity-selector">
+                      <button data-quantity="{{ item.quantity | minus: 1 }}" data-minus class="link--no-underline quantity__button button quantity-minus">-</button>
+                      <span>{{ item.quantity }}</span>
+                      <button data-quantity="{{ item.quantity | plus: 1 }}" data-plus class="link--no-underline quantity__button button quantity-minus">+</button>
+                    </div>
+
+                    <button data-quantity="0" data-remove class="link cart-line-item__remove button">Remove</button>
+                  </div>
+                </cart-actions>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <discount-input>
+          <div class="custom-cart-drawer__discount-input">
+            <div class="cart-discount__content">
+              <form
+                method="post"
+                action="{{ routes.cart_update_url }}"
+                class="cart-discount__form"
+                id="discount-form"
+              >
+                <input
+                  id="cart-discount"
+                  class="cart-discount__input"
+                  name="discount"
+                  placeholder="{{ 'content.discount_code' | t }}"
+                >
+                <button
+                  type="submit"
+                  class="button button--primary cart-discount__button"
+                >
+                  Apply discount
+                </button>
+              </form>
+            </div>
+            <ul class="cart-discount__codes">
+              {% for discount_code in discount_codes %}
+                <li
+                  class="cart-discount__pill"
+                  data-discount-code="{{ discount_code }}"
+                  aria-label="{{ 'accessibility.discount_applied' | t: code: discount_code }}"
+                >
+                  <p class="cart-discount__pill-code">
+                    {{ discount_code }}
+                  </p>
+                  <button
+                    class="cart-discount__pill-remove svg-wrapper svg-wrapper--smaller button-unstyled"
+                  >
+                    {{- 'icon-filters-close.svg' | inline_asset_content -}}
+                  </button>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </discount-input>
+        <div class="custom-cart-drawer__footer">
+          <h3>Total: {{ cart.total_price | money }}</h3>
+          <button class="button">Checkout</button>
+        </div>
+      {% else %}
+        <div class="cart-empty">
+          <h3>Your cart is empty</h3>
+          <p>Add some products to your cart to get started.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</custom-cart-drawer>

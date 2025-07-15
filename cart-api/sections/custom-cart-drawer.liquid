@@ -1,0 +1,6 @@
+{% comment %}
+  This is a custom cart drawer that will be used to display the cart in a drawer
+  You can use this in the bundle section rendering to rerender the cart when the cart is updated
+{% endcomment %}
+
+{% render 'custom-cart-drawer' %}

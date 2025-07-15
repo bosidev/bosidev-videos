@@ -1,0 +1,506 @@
+<style>
+  #shopify-block-{{ block.id }} {
+    display: {{ block.settings.display_type }};
+    flex-direction: {{ block.settings.layout_direction }};
+    justify-content: {{ block.settings.justify }};
+    align-items: {{ block.settings.align }};
+    padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px;
+    position: {{ block.settings.position }};
+    top: {{ block.settings.position_top }}%;
+    right: {{ block.settings.position_right }}%;
+    bottom: {{ block.settings.position_bottom }}%;
+    left: {{ block.settings.position_left }}%;
+    {%- if block.settings.background_color != 'rgba(0,0,0,0)' -%}
+      background-color: {{ block.settings.background_color }};
+    {%- endif -%}
+
+    {% if block.settings.width_type == 'fixed' %}
+      width: {{ block.settings.width }}px;
+    {% elsif block.settings.width_type == 'fill' %}
+      width: 100%;
+    {% elsif block.settings.width_type == 'custom_pixels' %}
+      width: {{ block.settings.width }}px;
+    {% elsif block.settings.width_type == 'custom_percentage' %}
+      width: {{ block.settings.width }}%;
+    {% else %}
+      width: auto;
+    {% endif %}
+
+    {% if block.settings.height_type == 'fixed' %}
+      height: {{ block.settings.height }}px;
+    {% elsif block.settings.height_type == 'fill' %}
+      height: 100%;
+    {% elsif block.settings.height_type == 'custom_pixels' %}
+      height: {{ block.settings.height }}px;
+    {% elsif block.settings.height_type == 'custom_percentage' %}
+      height: {{ block.settings.height }}%;
+    {% else %}
+      height: auto;
+    {% endif %}
+  }
+
+  @media (max-width: 768px) {
+    #shopify-block-{{ block.id }} {
+      display: {{ block.settings.display_type_mobile }};
+      flex-direction: {{ block.settings.layout_direction_mobile }};
+      justify-content: {{ block.settings.justify_mobile }};
+      align-items: {{ block.settings.align_mobile }};
+      padding: {{ block.settings.padding_top_mobile }}px {{ block.settings.padding_right_mobile }}px {{ block.settings.padding_bottom_mobile }}px {{ block.settings.padding_left_mobile }}px;
+      position: {{ block.settings.position_mobile }};
+      top: {{ block.settings.position_top_mobile }}%;
+      right: {{ block.settings.position_right_mobile }}%;
+      bottom: {{ block.settings.position_bottom_mobile }}%;
+      left: {{ block.settings.position_left_mobile }}%;
+
+      {% if block.settings.width_type_mobile == 'fixed' %}
+        width: {{ block.settings.width_mobile }}px;
+      {% elsif block.settings.width_type_mobile == 'fill' %}
+        width: 100%;
+      {% elsif block.settings.width_type_mobile == 'custom_pixels' %}
+        width: {{ block.settings.width_mobile }}px;
+      {% elsif block.settings.width_type_mobile == 'custom_percentage' %}
+        width: {{ block.settings.width_mobile }}%;
+      {% else %}
+        width: auto;
+      {% endif %}
+
+      {% if block.settings.height_type_mobile == 'fixed' %}
+        height: {{ block.settings.height_mobile }}px;
+      {% elsif block.settings.height_type_mobile == 'fill' %}
+        height: 100%;
+      {% elsif block.settings.height_type_mobile == 'custom_pixels' %}
+        height: {{ block.settings.height_mobile }}px;
+      {% elsif block.settings.height_type_mobile == 'custom_percentage' %}
+        height: {{ block.settings.height_mobile }}%;
+      {% else %}
+        height: auto;
+      {% endif %}
+    }
+  }
+</style>
+
+{% content_for 'blocks' %}
+
+{% schema %}
+{
+  "name": "Container",
+  "blocks": [{ "type": "@theme" }, { "type": "@app" }],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "header",
+      "content": "Desktop"
+    },
+    {
+      "type": "header",
+      "content": "Position"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Position",
+      "options": [
+        { "value": "relative", "label": "Relative" },
+        { "value": "absolute", "label": "Absolute" }
+      ],
+      "default": "relative"
+    },
+    {
+      "type": "range",
+      "id": "position_top",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "position_right",
+      "label": "Right",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "position_bottom",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "position_left",
+      "label": "Left",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "display_type",
+      "label": "Display type",
+      "options": [
+        { "value": "flex", "label": "Flex" },
+        { "value": "grid", "label": "Grid" }
+      ],
+      "default": "flex"
+    },
+    {
+      "type": "select",
+      "id": "layout_direction",
+      "label": "Layout direction",
+      "options": [
+        { "value": "row", "label": "Row" },
+        { "value": "column", "label": "Column" }
+      ],
+      "default": "row"
+    },
+    {
+      "type": "select",
+      "id": "justify",
+      "label": "Justify",
+      "options": [
+        { "value": "flex-start", "label": "Flex start" },
+        { "value": "flex-end", "label": "Flex end" },
+        { "value": "center", "label": "Center" },
+        { "value": "space-between", "label": "Space between" },
+        { "value": "space-around", "label": "Space around" },
+        { "value": "space-evenly", "label": "Space evenly" }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Align",
+      "options": [
+        { "value": "flex-start", "label": "Flex start" },
+        { "value": "flex-end", "label": "Flex end" },
+        { "value": "center", "label": "Center" },
+        { "value": "space-between", "label": "Space between" },
+        { "value": "space-around", "label": "Space around" },
+        { "value": "space-evenly", "label": "Space evenly" }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Padding right",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Padding left",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Width"
+    },
+    {
+      "type": "select",
+      "id": "width_type",
+      "label": "Width type",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "fixed", "label": "Fixed" },
+        { "value": "fill", "label": "Fill" },
+        { "value": "custom_pixels", "label": "Custom pixels" },
+        { "value": "custom_percentage", "label": "Custom percentage" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "number",
+      "id": "width",
+      "label": "Width",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Height"
+    },
+    {
+      "type": "select",
+      "id": "height_type",
+      "label": "Height type",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "fixed", "label": "Fixed" },
+        { "value": "fill", "label": "Fill" },
+        { "value": "custom_pixels", "label": "Custom pixels" },
+        { "value": "custom_percentage", "label": "Custom percentage" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "number",
+      "id": "height",
+      "label": "Height",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "header",
+      "content": "Position"
+    },
+    {
+      "type": "select",
+      "id": "position_mobile",
+      "label": "Position",
+      "options": [
+        { "value": "relative", "label": "Relative" },
+        { "value": "absolute", "label": "Absolute" }
+      ],
+      "default": "relative"
+    },
+    {
+      "type": "range",
+      "id": "position_top_mobile",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "position_right_mobile",
+      "label": "Right",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "position_bottom_mobile",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "position_left_mobile",
+      "label": "Left",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "display_type_mobile",
+      "label": "Display type",
+      "options": [
+        { "value": "flex", "label": "Flex" },
+        { "value": "grid", "label": "Grid" }
+      ],
+      "default": "flex"
+    },
+    {
+      "type": "select",
+      "id": "layout_direction_mobile",
+      "label": "Layout direction",
+      "options": [
+        { "value": "row", "label": "Row" },
+        { "value": "column", "label": "Column" }
+      ],
+      "default": "row"
+    },
+    {
+      "type": "select",
+      "id": "justify_mobile",
+      "label": "Justify",
+      "options": [
+        { "value": "flex-start", "label": "Flex start" },
+        { "value": "flex-end", "label": "Flex end" },
+        { "value": "center", "label": "Center" },
+        { "value": "space-between", "label": "Space between" },
+        { "value": "space-around", "label": "Space around" },
+        { "value": "space-evenly", "label": "Space evenly" }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "select",
+      "id": "align_mobile",
+      "label": "Align",
+      "options": [
+        { "value": "flex-start", "label": "Flex start" },
+        { "value": "flex-end", "label": "Flex end" },
+        { "value": "center", "label": "Center" },
+        { "value": "space-between", "label": "Space between" },
+        { "value": "space-around", "label": "Space around" },
+        { "value": "space-evenly", "label": "Space evenly" }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "label": "Padding right",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "label": "Padding left",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Width"
+    },
+    {
+      "type": "select",
+      "id": "width_type_mobile",
+      "label": "Width type",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "fixed", "label": "Fixed" },
+        { "value": "fill", "label": "Fill" },
+        { "value": "custom_pixels", "label": "Custom pixels" },
+        { "value": "custom_percentage", "label": "Custom percentage" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "number",
+      "id": "width_mobile",
+      "label": "Width",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Height"
+    },
+    {
+      "type": "select",
+      "id": "height_type_mobile",
+      "label": "Height type",
+      "options": [
+        { "value": "auto", "label": "Auto" },
+        { "value": "fixed", "label": "Fixed" },
+        { "value": "fill", "label": "Fill" },
+        { "value": "custom_pixels", "label": "Custom pixels" },
+        { "value": "custom_percentage", "label": "Custom percentage" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "number",
+      "id": "height_mobile",
+      "label": "Height",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Container"
+    },
+    {
+      "name": "Row",
+      "settings": {
+        "display_type": "flex",
+        "layout_direction": "row",
+        "justify": "flex-start",
+        "align": "flex-start",
+        "padding_top": 0,
+        "padding_right": 0
+      },
+      "blocks": []
+    },
+    {
+      "name": "Column",
+      "settings": {
+        "display_type": "flex",
+        "layout_direction": "column",
+        "justify": "flex-start",
+        "align": "flex-start",
+        "padding_top": 0,
+        "padding_right": 0
+      },
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

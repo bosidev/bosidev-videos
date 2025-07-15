@@ -1,0 +1,94 @@
+{% form 'cart', cart %}
+  <div class="cart-container {% if cart.empty? %}cart-container--empty{% endif %}">
+    <div class="cart-header">
+      <h1>Cart</h1>
+
+      <div class="increase-button">
+        <form action="{{ routes.cart_update_url }}" method="post">
+          {% for item in cart.items %}
+            <input type="hidden" name="updates[{{ item.key }}]" value="{{ item.quantity | plus: 1 }}">
+          {% endfor %}
+          <button type="submit" class="button">Increase all quantities by 1</button>
+        </form>
+      </div>
+
+      {% if cart.item_count > 0 %}
+        <div class="cart-clear-cart">
+          <form action="{{ routes.cart_clear_url }}" method="post">
+            <button type="submit" class="button">Clear cart</button>
+          </form>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="cart-items">
+      {% for item in cart.items %}
+        <div class="cart-line-item">
+          <div class="cart-line-item__info">
+            <div class="cart-line-item__image">
+              <a href="{{ item.url }}">
+                {{ item.image | image_url: width: 100 | image_tag }}
+              </a>
+            </div>
+            <div class="cart-line-item__details">
+              <h2>{{ item.product.title }}</h2>
+              <span>{{ item.variant.title }}</span>
+              <p>{{ item.final_line_price | money }}</p>
+
+              {% for property in item.properties %}
+                <p>{{ property.first }}: {{ property.last }}</p>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="cart-linte-item__actions">
+            <div class="quantity quantity-selector">
+              <a href="{{ routes.cart_change_url }}?quantity={{ item.quantity | minus: 1 }}&line={{ forloop.index }}" class="link--no-underline quantity__button button quantity-minus">-</a>
+              <span>{{ item.quantity }}</span>
+              <a href="{{ routes.cart_change_url }}?quantity={{ item.quantity | plus: 1 }}&line={{ forloop.index }}" class="link--no-underline quantity__button button quantity-plus">+</a>
+
+              <a class="link" href="{{ item.url_to_remove }}" class="cart-line-item__remove">Remove</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="cart-total">
+      <div class="cart-note">
+        <form action="{{ routes.cart_update_url }}" method="post">
+          <textarea name="note">{{ cart.note }}</textarea>
+          <button type="submit" class="button">Add note</button>
+        </form>
+      </div>
+
+      <div class="cart-total__wrapper">
+        <div class="cart-total__info">
+          <h3>Total:</h3>
+          <span>{{ cart.total_price | money }}</span>
+        </div>
+
+        <button class="button" name="checkout">Checkout</button>
+      </div>
+    </div>
+
+    {%- if cart.empty? -%}
+      <div class="cart-empty">
+        <h3>Your cart is empty</h3>
+        <p>Add some products to your cart to get started.</p>
+      </div>
+    {%- endif -%}
+  </div>
+{% endform %}
+
+{% schema %}
+{
+  "name": "Custom Cart",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Custom Cart"
+    }
+  ]
+}
+{% endschema %}
