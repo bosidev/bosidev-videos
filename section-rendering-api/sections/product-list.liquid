@@ -1,0 +1,39 @@
+<style>
+  .product-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  .product-list__item {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+</style>
+
+<div class="product-list">
+  {% assign products = collections.all.products %}
+  {% for product in products limit: 4 %}
+    <div class="product-list__item">
+      <a href="{{ product.url }}">
+        {{ product.featured_image | image_url: width: 300 | image_tag }}
+        <h2>{{ product.title }}</h2>
+        <p>{{ product.price | money }}</p>
+      </a>
+    </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+  {
+    "name": "Product List",
+    "settings": [
+    ],
+    "presets": [
+      {
+        "name": "Product List"
+      }
+    ]
+  }
+{% endschema %}

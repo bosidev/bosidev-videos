@@ -1,0 +1,65 @@
+<script src="{{ 'quick-view.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .quick-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease-in-out;
+  }
+
+  .quick-view__content {
+    margin-top: 4rem;
+  }
+
+  .quick-view[open] {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .quick-view__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .quick-view__inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: #fff;
+    width: 80%;
+    height: 80%;
+    transform: translate(-50%, -50%);
+  }
+
+  .quick-view__inner [data-close] {
+    position: absolute;
+    z-index: 1000;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+{% endstylesheet %}
+
+<quick-view class="quick-view">
+  <div class="quick-view__overlay"></div>
+  <div class="quick-view__inner">
+    <button data-close class="button">X</button>
+
+    <div class="quick-view__content"></div>
+  </div>
+</quick-view>

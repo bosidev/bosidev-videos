@@ -1,0 +1,108 @@
+{% comment %}
+  This section is to show a basic example of how to render a section using the section rendering API.
+{% endcomment %}
+<style>
+  .basic-render {
+    margin-top: 2rem;
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%
+  }
+
+  .basic-render__content {
+    display: flex;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 5rem;
+    border: 1px solid black;
+    border-radius: 4px;
+  }
+</style>
+
+<div class="basic-render">
+  <button data-render class="button">Render</button>
+
+  <div class="basic-render__content">
+    <div class="basic-render__hello-world">
+      <p>We want to render hello world in here!</p>
+    </div>
+    <div class="basic-render__product-list">
+      <p>We want to render product list in here!</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const renderButton = document.querySelector('[data-render]');
+
+  renderButton.addEventListener('click', () => {
+    {% comment %}
+      Basic section rendering API call
+
+      fetch(`${window.Shopify.routes.root}?sections=hello-world`)
+      .then((response) => response.json())
+      .then((data) => {
+        document.querySelector('.basic-render').innerHTML = data['hello-world'];
+      });
+    {% endcomment %}
+
+    {% comment %}
+      Element targeting
+
+      fetch(`${window.Shopify.routes.root}?sections=hello-world`)
+      .then((response) => response.json())
+      .then((data) => {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = data['hello-world'];
+        document.querySelector('.basic-render').innerHTML = tempDiv.querySelector('.welcome-description').innerHTML;
+      });
+    {% endcomment %}
+
+    {% comment %}
+      Multiple sections rendering
+
+      fetch(`${window.Shopify.routes.root}?sections=hello-world,product-list`)
+      .then((response) => response.json())
+      .then((data) => {
+        const helloWorld = document.createElement('div');
+        const productList = document.createElement('div');
+
+        helloWorld.innerHTML = data['hello-world'];
+        productList.innerHTML = data['product-list'];
+
+        document.querySelector('.basic-render__hello-world').innerHTML = helloWorld.innerHTML;
+        document.querySelector('.basic-render__product-list').innerHTML = productList.innerHTML;
+      });
+    {% endcomment %}
+
+    {% comment %}
+      Single section rendering
+
+      fetch(`${window.Shopify.routes.root}?section_id=hello-world`)
+      .then((response) => response.text())
+      .then((html) => {
+        document.querySelector('.basic-render').innerHTML = html;
+      });
+    {% endcomment %}
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Section render",
+  "settings": [
+  ],
+  "presets": [
+    {
+      "name": "Section render"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,122 @@
+{% comment %}
+  This section is used in the product template to render product page with
+  media, content, and add-to-cart form.
+
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/product
+{% endcomment %}
+
+<script src="{{ 'variant-selector.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .product {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+
+    .product-image {
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    .product-content__variant-bubble.active {
+      border: 1px solid #000000;
+    }
+
+    .product-content__variant-bubble-image-wrapper {
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 4px;
+      width: 75px;
+      height: 75px;
+    }
+
+    .product-content__variant-bubble-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    .product-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
+
+    .product-content__variant-bubbles-inner {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+  }
+{% endstylesheet %}
+
+<div class="product">
+  <div class="product-images">
+    {% for image in product.images %}
+      {{ image | image_url: width: 1000 | image_tag: class: 'product-image' }}
+    {% endfor %}
+  </div>
+  <div class="product-content">
+    <div class="product-info">
+      <h1>{{ product.title }}</h1>
+      <p>{{ product.selected_or_first_available_variant.price | money }}</p>
+    </div>
+
+    {%- unless product.has_only_default_variant -%}
+      <variant-selector class="product-content__variants">
+        <h3>Select your variant</h3>
+
+        {% for variant in product.variants %}
+          <div class="product-content__variant">
+            <input type="radio" name="variant" value="{{ variant.id }}" {% if variant.id == product.selected_or_first_available_variant.id %}checked{% endif %}>
+            <label for="{{ variant.id }}">{{ variant.title }}</label>
+          </div>
+        {% endfor %}
+      </variant-selector>
+    {%- endunless -%}
+
+    <div class="variant-inventory">
+      <p>Inventory: {{ product.selected_or_first_available_variant.inventory_quantity }}</p>
+    </div>
+
+    <product-form class="product-form">
+      {% form 'product', product %}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <input type="hidden" name="quantity" min="1" value="1">
+
+        <button type="submit" class="button">Add to cart</button>
+
+        {%- if section.settings.show_payment_button -%}
+          {{ form | payment_button }}
+        {%- endif -%}
+      {% endform %}
+    </product-form>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_payment_button",
+      "label": "Show payment button",
+      "default": false
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

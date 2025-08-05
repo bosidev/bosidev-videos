@@ -1,0 +1,188 @@
+{% comment %}
+  This section is used in the collection template to render collection page
+  listing all products within a collection.
+
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
+{% endcomment %}
+
+<script src="{{ 'pagination.js' | asset_url }}" defer></script>
+<script src="{{ 'collection-filters.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .collection-products {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: var(--grid-gap);
+  }
+
+  .collection-inner {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .collection-filters {
+    flex-shrink: 0;
+    padding: 1rem;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+  }
+
+  .collection-filter__option {
+    font-size: 1.4rem;
+  }
+
+  @media (max-width: 768px) {
+    .collection-products {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .collection-products {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .collection-product__image {
+    margin-bottom: 1rem;
+  }
+
+  .collection-product__title {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  .collection-products__pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    gap: 1rem;
+
+    .pagination__page,
+    .pagination__next,
+    .pagination__prev {
+      display: flex;
+      align-items: center;
+    }
+
+    .pagination__page {
+      background-color: rgb(255, 255, 255);
+      border-radius: 0.5rem;
+      border: 1px solid rgb(0, 0, 0, 0.05);
+    }
+
+    .pagination__page--current {
+      background-color: rgb(0, 0, 0, 0.05) !important;
+    }
+
+    .pagination__page.current,
+    .pagination__page {
+      padding: 0.5rem 1rem;
+    }
+  }
+{% endstylesheet %}
+
+<div class="collection">
+  <h1>{{ collection.title }}</h1>
+
+  <div class="collection-inner">
+    <collection-filters class="collection-filters" data-section-id="{{ section.id }}">
+      <div class="collection-filters__heading">
+        <h2>Filters</h2>
+      </div>
+
+      <div class="collection-filters__content">
+        {% for filter in collection.filters %}
+          <div class="collection-filter">
+            <h3>{{ filter.label }}</h3>
+            <div class="collection-filter__options">
+              {% for option in filter.values %}
+                <div class="collection-filter__option">
+                  <input
+                    type="checkbox"
+                    {% if option.active %}checked{% endif %}
+                    id="{{ filter.label | handle }}-{{ option.value | handle }}"
+                    name="{{ filter.label | handle }}"
+                    value="{{ option.value | handle }}"
+                    data-add-url="{{ option.url_to_add }}"
+                    data-remove-url="{{ option.url_to_remove }}"
+                  >
+                  <label for="{{ filter.label | handle }}-{{ option.value | handle }}">{{ option.value }}</label>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </collection-filters>
+
+    <div class="collection-grid">
+      {% paginate collection.products by section.settings.pagination_limit %}
+        <div class="collection-products" style="--grid-gap: {{ section.settings.grid_gap }}px">
+          {% for product in collection.products %}
+            <div class="collection-product">
+              {% if product.featured_image %}
+                {{ product.featured_image | image_url: width: 400 | image_tag: class: 'collection-product__image' }}
+              {% endif %}
+              <div class="collection-product__content">
+                <a href="{{ product.url }}" class="collection-product__title">{{ product.title | escape }}</a>
+                <p>{{ product.price | money }}</p>
+              </div>
+              <div class="collection-product__quick-view">
+                <button data-quick-view data-product-handle="{{ product.handle }}" class="button">Quick View</button>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+          <pagination-component data-section-id="{{ section.id }}" data-target=".collection">
+            <div class="collection-products__pagination">
+              {%- if paginate.previous -%}
+                <a href="{{ paginate.previous.url }}" class="pagination__prev">Previous</a>
+              {%- endif -%}
+
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}" class="pagination__page">{{ part.title }}</a>
+                {%- else -%}
+                  <span class="pagination__page pagination__page--current">{{ part.title }}</span>
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- if paginate.next -%}
+                <a href="{{ paginate.next.url }}" class="pagination__next">Next</a>
+              {%- endif -%}
+            </div>
+          </pagination-component>
+        {% endif %}
+      {% endpaginate %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid Gap",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "pagination_limit",
+      "label": "Pagination Limit",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "default": 2
+    }
+  ]
+}
+{% endschema %}
