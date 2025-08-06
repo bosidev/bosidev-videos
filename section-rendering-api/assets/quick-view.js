@@ -6,12 +6,21 @@ class QuickView extends HTMLElement {
   connectedCallback() {
     this.content = this.querySelector(".quick-view__content");
     this.openButtons = document.querySelectorAll("[data-quick-view]");
-    this.openButtons.forEach(button => {
-      button.addEventListener("click", this.handleClick.bind(this));
-    });
-
     this.closeButton = this.querySelector("[data-close]");
-    this.closeButton.addEventListener("click", this.closeDrawer.bind(this));
+    this.handleClick = this.handleClick.bind(this);
+    this.closeDrawer = this.closeDrawer.bind(this);
+
+    this.openButtons.forEach(button => {
+      button.addEventListener("click", this.handleClick);
+    });
+    this.closeButton.addEventListener("click", this.closeDrawer);
+  }
+
+  disconnectedCallback() {
+    this.openButtons.forEach(button => {
+      button.removeEventListener("click", this.handleClick);
+    });
+    this.closeButton.removeEventListener("click", this.closeDrawer);
   }
 
   handleClick(event) {

@@ -9,8 +9,16 @@ class CollectionFilters extends HTMLElement {
 
   connectedCallback() {
     this.filterOptions = this.querySelectorAll("input[type='checkbox']");
+    this.handleFilterChange = this.handleFilterChange.bind(this);
+
     this.filterOptions.forEach((option) => {
-      option.addEventListener("change", this.handleFilterChange.bind(this));
+      option.addEventListener("change", this.handleFilterChange);
+    });
+  }
+
+  disconnectedCallback() {
+    this.filterOptions.forEach((option) => {
+      option.removeEventListener("change", this.handleFilterChange);
     });
   }
 

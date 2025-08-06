@@ -5,8 +5,16 @@ class VariantSelector extends HTMLElement {
 
   connectedCallback() {
     this.selectors = this.querySelectorAll("input[type='radio']");
+    this.handleChange = this.handleChange.bind(this);
+
     this.selectors.forEach(selector => {
-      selector.addEventListener("change", this.handleChange.bind(this));
+      selector.addEventListener("change", this.handleChange);
+    });
+  }
+
+  disconnectedCallback() {
+    this.selectors.forEach(selector => {
+      selector.removeEventListener("change", this.handleChange);
     });
   }
 

@@ -13,8 +13,16 @@ class PaginationComponent extends HTMLElement {
 
   connectedCallback() {
     this.links = this.querySelectorAll("a");
+    this.handlePaginationButton = this.handlePaginationButton.bind(this);
+
     this.links.forEach((link) => {
-      link.addEventListener("click", this.handlePaginationButton.bind(this));
+      link.addEventListener("click", this.handlePaginationButton);
+    });
+  }
+
+  disconnectedCallback() {
+    this.links.forEach((link) => {
+      link.removeEventListener("click", this.handlePaginationButton);
     });
   }
 
