@@ -1,0 +1,23 @@
+{% comment %}
+  Renders a button with the given properties
+
+  Accepts:
+  - class: {String} Here you can put classes the button should inherit
+  - text: {String} The text for the button
+  - size: {String} Defines the size of the button. Accepts: 'large', defaults to normal.
+  - type: {String} Defines the type of the button. Accepts: 'button', 'submit'.
+  - disabled: {Boolean} Defines if the button is disabled or not. Defaults to 'false'
+
+  Usage:
+  {% render 'button' type: 'submit', size: 'large', class: "product-form__button" %}
+{% endcomment %}
+
+<button 
+  class="button {{ class }} {% if size %}button--{{ size }}{% endif %}" 
+  type="{{ type }}" 
+  {% if disabled %}disabled{% endif %} 
+  {% if name %}name="{{ name }}"{% endif %}
+  {% if value %}value="{{ value }}"{% endif %}
+>
+  {{ text }}
+</button>

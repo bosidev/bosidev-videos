@@ -1,0 +1,18 @@
+<sort-by data-section-id="{{ section.id }}">
+
+  <openable-element data-action="hover" class="hover-tab" aria-expanded="false">
+    <div data-open>
+      <h3 class="h3">Sort Collection</h3>
+    </div>
+    <div data-content>
+      <ul class="vertical-list sort-by__values">
+        {%- for sort_option in collection.sort_options -%}
+          <li>
+            <label>{{ sort_option.name }}</label>
+            <input name="sort" type="checkbox" data-href="{{ request.path }}" value="{{ sort_option.value }}" {% if collection.sort_by == sort_option.value %}checked{% endif %}>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </openable-element>
+</sort-by>

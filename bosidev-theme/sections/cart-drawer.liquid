@@ -1,0 +1,66 @@
+{% comment %} TODO: Handle Cart Errors {% endcomment %}
+{% comment %} TODO: Handle fetch time out for elements, disable everyhting {% endcomment %}
+
+<cart-drawer data-drawer-id="cart-drawer" data-open-overlay>
+  {% form 'cart', cart, class: "cart-form" %}
+    <div class="drawer drawer--right cart-drawer">
+      <div class="drawer__header drawer__part">
+        <h2 class="no-margin">Cart</h2>
+        <span data-close="cart-drawer">
+          X
+        </span>
+      </div>
+      <div class="drawer__main drawer__part{% if cart.empty? %} drawer__part--centered{% endif %}">
+        {%- if cart.empty? -%}
+          <h3>YOUR CART IS EMPTY</h3>
+          {% render 'button', size: 'large', type: 'button', text: 'Start Shopping', class: "button--primary" %}
+        {%- else -%}
+          <div class="cart-items">
+            {%- for line_item in cart.items -%}
+              <div class="line-item">
+                <div class="line-item__image image-wrapper">
+                  {{ line_item.variant.featured_image | image_url: width: 160 | image_tag }}
+                </div>
+                <div class="line-item__content-wrapper">
+                  <div class="line-item__content">
+                    <h4>{{ line_item.title }}</h4>
+                    <span>{{ line_item.price | money }}</span>
+                  </div>
+                  <cart-actions data-line="{{ forloop.index }}" class="cart-actions">
+                    <div class="cart-actions__remove">
+                      <a data-cart-action="remove" href="{{ line_item.url_to_remove }}">
+                        {% render 'icon' with 'trash-bin', classes: "icon--l" %}
+                      </a>
+                    </div>
+                    <div class="cart-actions__quantity">
+                      <button class="quantity-action" data-cart-action="minus">-</button>
+                      <input class="quantity-action" data-cart-action="change" type="number" value="{{ line_item.quantity }}">
+                      <button class="quantity-action" data-cart-action="plus">+</button>
+                    </div>
+                  </cart-actions>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+      {%- unless cart.empty? -%}
+        <div class="drawer__footer drawer__part">
+          <div class="cart-checkout-info">
+            <div>
+              <span>Total</span>
+              <span>{{ cart.total_price | money }}</span>
+            </div>
+          </div>
+          {% render 'button', type: 'submit', class: 'button--primary', text: "Pay now", size: "large", name: "checkout", value: "Checkout" %}
+        </div>
+      {%- endunless -%}
+    </div>
+  {% endform %}
+</cart-drawer>
+
+{% schema %}
+  {
+    "name": "Cart Drawer"
+  }
+{% endschema %}

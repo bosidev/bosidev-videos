@@ -1,0 +1,60 @@
+<style>
+  #{{ block.id }} {
+    {% if block.settings.background_color != 'rgba(0,0,0,0)' %}
+      background-color: rgb({{ block.settings.background_color.red }}, {{ block.settings.background_color.green }},{{ block.settings.background_color.blue }});
+    {% endif %}
+  }
+</style>
+
+<div 
+  class="block-container-wrapper {{ block.settings.spacing | class_list }} {{ block.settings.size | class_list }}"
+  id="{{ block.id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="block-container {{ block.settings.layout | class_list }}">
+    {%- content_for 'blocks' -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Container",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+    },
+    {
+      "type": "style.size_panel",
+      "id": "size",
+      "label": "Size"
+    },
+    {
+      "type": "style.spacing_panel",
+      "id": "spacing",
+      "label": "Spacing"
+    },
+    {
+      "type": "style.layout_panel",
+      "id": "layout",
+      "label": "Layout"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@theme"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Container"
+    }
+  ]
+}
+{% endschema %}

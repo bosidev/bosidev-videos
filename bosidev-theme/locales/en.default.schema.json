@@ -1,0 +1,76 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "404_main": {
+      "name": "404 main"
+    },
+    "account_main": {
+      "name": "Account main"
+    },
+    "activate_account_main": {
+      "name": "Activate account main"
+    },
+    "addresses_main": {
+      "name": "Activate main"
+    },
+    "article_main": {
+      "name": "Article main"
+    },
+    "banner": {
+      "name": "Banner main"
+    },
+    "blog_main": {
+      "name": "Blog main"
+    },
+    "cart_main": {
+      "name": "Cart main"
+    },
+    "collection_main": {
+      "name": "Collection main"
+    },
+    "contact": {
+      "name": "Contact"
+    },
+    "custom_liquid": {
+      "name": "Custom Liquid"
+    },
+    "list_collections_main": {
+      "name": "List collections main"
+    },
+    "login_main": {
+      "name": "Login main"
+    },
+    "order_main": {
+      "name": "Order main"
+    },
+    "page_main": {
+      "name": "Page main"
+    },
+    "password_main": {
+      "name": "Password main"
+    },
+    "product_main": {
+      "name": "Product main"
+    },
+    "register_main": {
+      "name": "Register main"
+    },
+    "reset_password_main": {
+      "name": "Reset password main"
+    },
+    "search_main": {
+      "name": "Search main"
+    }
+  },
+  "general": {
+    "heading": "Heading"
+  }
+}

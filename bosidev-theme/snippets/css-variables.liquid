@@ -1,0 +1,53 @@
+{% assign heading_font = settings.heading_font %}
+{% assign base_font = settings.base_font %}
+{% assign heading_font_size = settings.heading_font_size %}
+{% assign base_font_size = settings.base_font_size %}
+
+<style>
+  {{ heading_font | font_face }}
+  {{ basefont | font_face }}
+
+  :root {
+    /* TYPOGRPAHY */
+    --heading-font-family: {{ heading_font.family }};
+    --heading-font-weight: {{ heading_font.weight }};
+    --heading-font-style: {{ heading_font.style }};
+    --heading-font-size: {{ heading_font_size }}px;
+    --heading-h2-font-size: {{ heading_font_size | divided_by: 1.618 }}px;
+    --heading-h3-font-size: {{ heading_font_size | divided_by: 1.618 | divided_by: 1.618 }}px;
+    --heading-h4-font-size: {{ heading_font_size | divided_by: 1.618 | divided_by: 1.618 | divided_by: 1.618 }}px;
+    --heading-h5-font-size: {{ heading_font_size | divided_by: 1.618 | divided_by: 1.618 | divided_by: 1.618 | divided_by: 1.618 }}px;
+    --heading-h6-font-size: {{ heading_font_size | divided_by: 1.618 | divided_by: 1.618 | divided_by: 1.618 | divided_by: 1.618 | divided_by: 1.618 }}px;
+
+    --base-font-family: {{ base_font.family }};
+    --base-font-weight: {{ base_font.weight }};
+    --base-font-style: {{ base_font.style }};
+    --base-font-size: {{ base_font_size }}px;
+
+    /* COLORS */
+
+    --background-pimary: {{ settings.background_primary.red }}, {{ settings.background_primary.green }}, {{ settings.background_primary.blue }};
+    --background-secondary: {{ settings.background_secondary.red }}, {{ settings.background_secondary.green }}, {{ settings.background_secondary.blue }};
+    --text: {{ settings.text.red }}, {{ settings.text.green }}, {{ settings.text.blue }};
+    --border-color: {{ settings.text.red }}, {{ settings.text.green }}, {{ settings.text.blue }}, 0.1;
+    --primary-button-background: {{ settings.primary_button_background.red }}, {{ settings.primary_button_background.green }}, {{ settings.primary_button_background.blue }};
+    --primary-button-text: {{ settings.primary_button_text.red }}, {{ settings.primary_button_text.green }}, {{ settings.primary_button_text.blue }};
+    --secondary-button-background: {{ settings.secondary_button_background.red }}, {{ settings.secondary_button_background.green }}, {{ settings.secondary_button_background.blue }};
+    --secondary-button-text: {{ settings.secondary_button_text.red }}, {{ settings.secondary_button_text.green }}, {{ settings.secondary_button_text.blue }};
+    --brand-accent: {{ settings.brand_accent.red }}, {{ settings.brand_accent.green }}, {{ settings.brand_accent.blue }};
+    --highlight-accent: {{ settings.highlight_accent.red }}, {{ settings.highlight_accent.green }}, {{ settings.highlight_accent.blue }};
+
+    /* LAYOUT */
+    --page-width: {{ settings.page_width }};
+    --list-gap: 2rem;
+    --grid-gap: 2rem;
+    --icon-size-m: 1.5rem;
+    --box-padding: 1.2rem;
+    --grid-columns: 1fr 1fr 1fr 1fr;
+    --grid-columns-mobile: 1fr 1fr;
+    --grid-gap: 2rem;
+    --grid-gap-mobile: 1rem;
+    --menu-item-padding: 1rem;
+    --border-radius: {{ settings.border_radius }}px;
+  }
+</style>

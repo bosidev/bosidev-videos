@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- unless settings.heading_font.system? and settings.base_font.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+    
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {%- unless settings.heading_font.system? -%}
+      {% comment %}theme-check-disable AssetPreload{% endcomment %}
+      <link rel="preload" as="font" href="{{ settings.heading_font | font_url }}" type="font/woff2" crossorigin>
+      {% comment %}theme-check-enable AssetPreload{% endcomment %}
+    {%- endunless -%}
+    {%- unless settings.base_font.system? -%}
+      {% comment %}theme-check-disable AssetPreload{% endcomment %}
+      <link rel="preload" as="font" href="{{ settings.base_font | font_url }}" type="font/woff2" crossorigin>
+      {% comment %}theme-check-enable AssetPreload{% endcomment %}
+    {%- endunless -%} 
+
+    {% render 'meta-tags' %}
+    
+    {% render 'theme-variables' %}
+    {% render 'css-variables' %}
+    {% render 'translations' %}
+
+    <style>
+      iframe#admin-bar-iframe {
+          display: none!important;
+      }
+    </style>
+    
+    {{ 'main.css' | asset_url | stylesheet_tag }}
+    {{ 'swiper.min.css' | asset_url | stylesheet_tag }}
+    
+    {% comment %} TODO: Check how to import swiper in a better way {% endcomment %}
+    <script src="{{ 'swiper-bundle.min.js' | asset_url }}"></script>
+    <script src="{{ 'main.js' | asset_url }}" defer="defer"></script>
+    
+    {{ content_for_header }}
+  </head>
+  <body>
+    {% sections 'header-group' %}
+
+    <main class="main-layout">
+      {{ content_for_layout }}
+    </main>
+    
+    {% sections 'footer-group' %}
+    {% sections 'aside-group' %}
+
+    <div id="overlay"></div>
+  </body>
+</html>

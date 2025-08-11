@@ -1,0 +1,103 @@
+<style>
+  #{{ block.id }} {
+    {% if block.settings.background_color != 'rgba(0,0,0,0)' %}
+      background-color: rgb({{ block.settings.background_color.red }}, {{ block.settings.background_color.green }},{{ block.settings.background_color.blue }});
+    {% endif %}
+
+    {% if block.settings.text_color != 'rgba(0,0,0,0)' %}
+      color: rgb({{ block.settings.text_color.red }}, {{ block.settings.text_color.green }},{{ block.settings.text_color.blue }});
+    {% endif %}
+  }
+
+  #{{ block.id }}:hover {
+    {% if block.settings.hover_background_color != 'rgba(0,0,0,0)' %}
+      background-color: rgb({{ block.settings.hover_background_color.red }}, {{ block.settings.hover_background_color.green }},{{ block.settings.hover_background_color.blue }});
+    {% endif %}
+
+    {% if block.settings.hover_text_color != 'rgba(0,0,0,0)' %}
+      color: rgb({{ block.settings.hover_text_color.red }}, {{ block.settings.hover_text_color.green }},{{ block.settings.hover_text_color.blue }});
+    {% endif %}
+  }
+</style>
+
+{% if block.settings.button_url != blank %}
+  {%- assign button_tag = 'a' -%}
+{% else %}
+  {%- assign button_tag = 'button' -%}
+{% endif %}
+
+<{{ button_tag }}
+  {% if block.settings.button_url != blank %}href="{{ block.settings.button_url }}"{% endif %}
+  class="button-block {{ block.settings.button_classes }} {{ block.settings | class_list }}"
+  id="{{ block.id }}"
+  {{ block.shopify_attributes }}
+>
+  {{ block.settings.button_text }}
+</{{ button_tag }}>
+
+{% schema %}
+{
+  "name": "Button",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button url"
+    },
+    {
+      "type": "text",
+      "id": "button_classes",
+      "label": "Button classes"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color"
+    },
+    {
+      "type": "color",
+      "id": "hover_background_color",
+      "label": "Hover background color"
+    },
+    {
+      "type": "color",
+      "id": "hover_text_color",
+      "label": "Hover text color"
+    },
+    {
+      "type": "style.size_panel",
+      "id": "size",
+      "label": "Size"
+    },
+    {
+      "type": "style.spacing_panel",
+      "id": "spacing",
+      "label": "Spacing"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Button"
+    }
+  ]
+}
+{% endschema %}

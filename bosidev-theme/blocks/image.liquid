@@ -1,0 +1,72 @@
+{%- if block.settings.lazy_loading -%}
+  {%- assign loading = 'lazy' -%}
+{%- else -%}
+  {%- assign loading = 'eager' -%}
+{%- endif -%}
+
+{%- assign image_width = block.settings.size | json | split: '"width":"' | last | split: '"' | first -%}
+
+{% if image_width == 'auto' %}
+  {%- assign image_url_width = settings.page_width -%}
+{% elsif image_width == "fit-content" %}
+  {%- assign image_url_width = settings.page_width -%}
+{% elsif image_width contains "px" %}
+  {%- assign image_width = image_width | remove: 'px' | plus: 0 -%}
+  {%- assign image_url_width = image_width | times: 2 -%}
+{% elsif image_width contains "%" %}
+  {%- assign image_width = image_width | remove: '%' | plus: 0 -%}
+  {%- assign divisor = 100 | divided_by: image_width -%}
+
+  {%- assign image_url_width = settings.page_width | divided_by: divisor | times: 2 -%}
+{% endif %}
+
+
+<div class="image-block {{ block.settings | class_list }}" {{ block.shopify_attributes }}>
+  {%- if block.settings.image != blank -%}
+    {{ block.settings.image | image_url: width: image_url_width | image_tag: alt: block.settings.image.alt, lazy_loading: loading }}
+  {%- else -%}
+    {{ 'collection-1' | placeholder_svg_tag }}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Image",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "lazy_loading",
+      "label": "Lazy loading"
+    },
+    {
+      "type": "style.size_panel",
+      "id": "size",
+      "label": "Size"
+    },
+    {
+      "type": "style.spacing_panel",
+      "id": "spacing",
+      "label": "Spacing"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image"
+    }
+  ]
+}
+{% endschema %}

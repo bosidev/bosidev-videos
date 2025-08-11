@@ -1,0 +1,54 @@
+<predictive-search>
+  <form action="{{ routes.search_url }}" method="get" role="search" class="predictive-search__form">
+    <div class="predictive-search__input">
+      <label hidden for="Search">Search</label>
+      <input
+        id="Search"
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        role="combobox"
+        aria-expanded="false"
+        aria-owns="predictive-search-results"
+        aria-controls="predictive-search-results"
+        aria-haspopup="listbox"
+        aria-autocomplete="list"
+        placeholder="Search"
+      >
+      <input name="options[prefix]" type="hidden" value="last">
+    </div>
+
+    <div class="predictive-search__ressources">
+      <div class="predictive-search__resource-list">
+        <h3>{{ 'sections.predictive_search.side_menu_heading' | t }}</h3>
+        {%- if settings.predictive_side_menu != blank -%}
+          <ul class="vertical-list">
+            {%- for link in settings.predictive_side_menu.links -%}
+              <li>
+                <a href="{{ link.url }}">
+                  <span>{{ link.title }}</span>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+      <div class="predictive-search__results">
+        {%- if settings.predictive_recommendations != blank -%}
+          <div class="predictive-search__recommendations">
+            <h3>{{ settings.predictive_recommendations.title }}</h3>
+            <ul class="predictive-search__recommendation-products card-grid" style="--grid-columns: repeat(4, 1fr);--grid-columns-mobile: repeat(2, 1fr)">
+              {%- for product in settings.predictive_recommendations.products limit: settings.predictive_recommendations_quantity -%}
+                <li class="card-grid__item">
+                  {% render 'product-card', product: product %}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+        <div id="predictive-search" tabindex="-1">
+        </div>
+      </div>
+    </div>
+  </form>
+</predictive-search>

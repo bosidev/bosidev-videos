@@ -1,0 +1,28 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "base_font_size": 16,
+    "text": "#000000",
+    "logo": "shopify://shop_images/Design_ohne_Titel_2.png",
+    "logo_width_desktop": 160,
+    "logo_width_mobile": 100,
+    "favicon": "shopify://shop_images/laptop_wave_1.png",
+    "enable_collection_search": true,
+    "enable_articles_search": false,
+    "enable_pages_search": false,
+    "predictive_recommendations": "bestseller",
+    "predictive_side_menu": "list-menu-test",
+    "predictive_recommendations_quantity": 8,
+    "product_card_image_ratio": "square",
+    "background": "#ffffff",
+    "content_for_index": []
+  }
+}

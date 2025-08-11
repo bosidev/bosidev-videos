@@ -1,0 +1,111 @@
+{%- assign initial_slide_index = 0 -%}
+
+{%- for media in product.media -%}
+  {%- if product.selected_or_first_available_variant.featured_media.id == media.id -%}
+    {%- assign initial_slide_index = forloop.index0 -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<div class="product__gallery">
+  {%- if section.settings.gallery_style == "slider" -%}
+    {% capture swiper_main_settings %}
+      {
+        "slidesPerView": 1,
+        "effect": "coverflow",
+        "coverflowEffect": {
+          "rotate": 0,
+          "slideShadows": false
+        },
+        "initialSlide": {{ initial_slide_index }}
+      }
+    {% endcapture %}
+  
+    {% capture swiper_thumbnail_settings %}
+      {
+        "slidesPerView": "auto"
+      }
+    {% endcapture %}
+
+    <product-gallery-slider id="product__gallery-main" class="swiper" data-thumbnails="product__gallery-thumbnails" data-swiper-config='{{ swiper_main_settings }}'>
+      <div class="swiper-wrapper">
+        {%- for media in product.media -%}
+          {% case section.settings.media_ratio %}
+            {% when 'original' %}
+              {%- assign aspect_ratio = media.aspect_ratio -%}
+            {% when 'square' %}
+              {%- assign aspect_ratio = 1 -%}
+            {% when 'rectangle' %}
+              {%- assign aspect_ratio = 0.8 -%}
+            {% else %}
+              {%- assign aspect_ratio = 1 -%}
+          {% endcase %}
+
+          <div class="swiper-slide" data-media-id="{{ media.id }}">
+            {%- case media.media_type -%}
+              {%- when 'image' -%}
+                <div class="image-wrapper aspect-ratio-wrapper" style="aspect-ratio:{{ aspect_ratio | default: 1 }}">
+                  {{ media.preview_image | image_url: width: 1200 | image_tag }}
+                </div>
+              {%- when 'video' -%}
+              {%- when 'external_video' -%}
+              {%- when 'model' -%}
+            {%- endcase -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </product-gallery-slider>
+    <slider-element id="product__gallery-thumbnails" class="swiper" data-swiper-config='{{ swiper_thumbnail_settings }}'>
+      <div class="swiper-wrapper">
+        {%- for media in product.media -%}
+          {% case section.settings.media_ratio %}
+            {% when 'original' %}
+              {%- assign aspect_ratio = media.aspect_ratio -%}
+            {% when 'square' %}
+              {%- assign aspect_ratio = 1 -%}
+            {% when 'rectangle' %}
+              {%- assign aspect_ratio = 0.8 -%}
+            {% else %}
+              {%- assign aspect_ratio = 1 -%}
+        {% endcase %}
+
+          <div class="swiper-slide" data-media-id="{{ media.id }}">
+            {%- case media.media_type -%}
+              {%- when 'image' -%}
+                <div class="image-wrapper aspect-ratio-wrapper" style="aspect-ratio:{{ aspect_ratio | default: 1 }}">
+                  {{ media.preview_image | image_url: width: 240 | image_tag }}
+                </div>
+              {%- when 'video' -%}
+              {%- when 'external_video' -%}
+              {%- when 'model' -%}
+            {%- endcase -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </slider-element>
+  {%- else -%}
+    <div class="product__gallery-tiles">
+      {%- for media in product.media -%}
+        {% case section.settings.media_ratio %}
+          {% when 'original' %}
+            {%- assign aspect_ratio = media.aspect_ratio -%}
+          {% when 'square' %}
+            {%- assign aspect_ratio = 1 -%}
+          {% when 'rectangle' %}
+            {%- assign aspect_ratio = 0.8 -%}
+          {% else %}
+            {%- assign aspect_ratio = 1 -%}
+        {% endcase %}
+
+        {%- case media.media_type -%}
+          {%- when 'image' -%}
+            <div class="image-wrapper aspect-ratio-wrapper" style="aspect-ratio:{{ aspect_ratio | default: 1 }}">
+              {{ media.preview_image | image_url: width: 600 | image_tag }}
+            </div>
+          {%- when 'video' -%}
+          {%- when 'external_video' -%}
+          {%- when 'model' -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  {%- endif %}
+</div>

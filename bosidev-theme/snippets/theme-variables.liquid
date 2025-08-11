@@ -1,0 +1,8 @@
+<script>
+  window.themeVariables = {
+    "shopURL": {{ shop.url | json }},
+    "currency": {{ shop.currency | json }},
+    "requestLocale": {{ request.locale.iso_code | json }},
+    "moneyFormat": {%- if settings.show_currency -%}{{ shop.money_with_currency_format | json }}{%- else -%}{{ shop.money_format | json }}{%- endif -%}
+  };
+</script>

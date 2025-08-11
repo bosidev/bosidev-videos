@@ -1,0 +1,168 @@
+{%- if predictive_search.performed -%}
+  {%- if predictive_search.terms == "*" -%}
+    <div class="predictive-search__ressources">
+      <div class="predictive-search__resource-list">
+        <h3>{{ 'sections.predictive_search.side_menu_heading' | t }}</h3>
+        {%- if settings.predictive_side_menu != blank -%}
+          <ul class="vertical-list">
+            {%- for link in settings.predictive_side_menu.links -%}
+              <li>
+                <a href="{{ link.url }}">
+                  <span>{{ link.title }}</span>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+      <div id="predictive-search-results">
+        {%- if settings.predictive_recommendations != blank -%}
+          <div class="predictive-search__recommendations">
+            <h3>{{ settings.predictive_recommendations.title }}</h3>
+            <ul class="predictive-search__recommendation-products card-grid" style="--grid-columns: repeat(4, 1fr);--grid-columns-mobile: repeat(2, 1fr)">
+              {%- for product in settings.predictive_recommendations.products limit: settings.predictive_recommendations_quantity -%}
+                <li class="card-grid__item">
+                  {% render 'product-card', product: product %}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- else -%}
+    {%- if 
+      predictive_search.resources.products.size == 0 and 
+      predictive_search.resources.collections.size == 0 and
+      predictive_search.resources.articles.size == blank and
+      predictive_search.resources.pages.size == 0
+    -%}
+      <div class="predictive-search__ressources">
+        <div class="predictive-search__resource-list">
+          <h3>{{ 'sections.predictive_search.side_menu_heading' | t }}</h3>
+          {%- if settings.predictive_side_menu != blank -%}
+            <ul class="vertical-list">
+              {%- for link in settings.predictive_side_menu.links -%}
+                <li>
+                  <a href="{{ link.url }}">
+                    <span>{{ link.title }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+        <div id="predictive-search-results">
+          {%- if settings.predictive_recommendations != blank -%}
+            <div class="predictive-search__recommendations">
+              <h3>{{ settings.predictive_recommendations.title }}</h3>
+              <ul class="predictive-search__recommendation-products card-grid" style="--grid-columns: repeat(4, 1fr);--grid-columns-mobile: repeat(2, 1fr)">
+                {%- for product in settings.predictive_recommendations.products limit: settings.predictive_recommendations_quantity -%}
+                  <li class="card-grid__item">
+                    {% render 'product-card', product: product %}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- else -%}
+      <div class="predictive-search__resource-list">
+        {%- if 
+          predictive_search.resources.collections.size == 0 and
+          predictive_search.resources.articles.size == blank and
+          predictive_search.resources.pages.size == 0
+        -%}
+          <h3>{{ 'sections.predictive_search.side_menu_heading' | t }}</h3>
+          {%- if settings.predictive_side_menu != blank -%}
+            <ul class="vertical-list">
+              {%- for link in settings.predictive_side_menu.links -%}
+                <li>
+                  <a href="{{ link.url }}">
+                    <span>{{ link.title }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        {%- else -%}
+          {%- if predictive_search.resources.collections.size > 0 and settings.enable_collection_search -%}
+            <h3>
+              Collections
+            </h3>
+            <ul role="listbox" aria-labelledby="predictive-search-products">
+              {%- for collection in predictive_search.resources.collections -%}
+                <li role="option">
+                  {{ collection.title }}
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+          {%- if predictive_search.resources.articles.size > 0 and settings.enable_articles_search -%}
+            <h3>
+              Articles
+            </h3>
+            <ul role="listbox" aria-labelledby="predictive-search-products">
+              {%- for article in predictive_search.resources.articles -%}
+                <li role="option">
+                  <a href="{{ article.url }}">
+                    <div class="image-wrapper">
+                      {{ article.featured_image  | image_url: width: 50 | image_tag }}
+                    </div>
+                    <span>{{ article.title }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+          {%- if predictive_search.resources.pages.size > 0 and settings.enable_pages_search -%}
+            <h3>
+              Pages
+            </h3>
+            <ul role="listbox" aria-labelledby="predictive-search-products">
+              {%- for page in predictive_search.resources.pages -%}
+                <li role="option">
+                  <a href="{{ page.url }}">
+                    <div class="image-wrapper">
+                      {{ page | image_url: width: 50 | image_tag }}
+                    </div>
+                    <span>{{ page.title }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    
+      <div id="predictive-search-results">
+        {%- if predictive_search.resources.products.size > 0 and settings.enable_product_search -%}
+          <h3 id="predictive-search-products">
+            Products
+          </h3>
+          <ul class="card-grid" role="listbox" aria-labelledby="predictive-search-products">
+            {%- for product in predictive_search.resources.products -%}
+              <li class="card-grid__item" role="option">
+                {% render 'product-card', product: product -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- else -%}
+          {%- if settings.predictive_recommendations != blank -%}
+            <div class="predictive-search__recommendations">
+              <h3>{{ settings.predictive_recommendations.title }}</h3>
+              <ul class="predictive-search__recommendation-products card-grid" style="--grid-columns: repeat(4, 1fr);--grid-columns-mobile: repeat(2, 1fr)">
+                {%- for product in settings.predictive_recommendations.products limit: settings.predictive_recommendations_quantity -%}
+                  <li class="card-grid__item">
+                    {% render 'product-card', product: product %}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}

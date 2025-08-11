@@ -1,0 +1,137 @@
+{{ 'product.css' | asset_url | stylesheet_tag }}
+
+{%- assign product_form_id = 'product_form_' | append: section.id -%}
+
+<div class="container">
+  <div class="product">
+    {% render 'product-gallery', section: section %}
+    {% render 'product-info', section: section, product_form_id: product_form_id %}
+  </div>
+</div>
+
+{% render 'product-data' %}
+
+{% schema %}
+  {
+    "name": "t:sections.product_main.name",
+    "tag": "section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Product Gallery"
+      },
+      {
+        "type": "select",
+        "id": "gallery_style",
+        "label": "Gallery Style",
+        "options": [
+          {
+            "value": "slider",
+            "label": "Slider"
+          },
+          {
+            "value": "gallery",
+            "label": "Gallery"
+          },
+        ]
+      },
+      {
+        "type": "select",
+        "id": "media_ratio",
+        "label": "Media Ratio",
+        "options": [
+          {
+            "value": "square",
+            "label": "1:1"
+          },
+          {
+            "value": "rectangle",
+            "label": "4:5"
+          },
+          {
+            "value": "original",
+            "label": "Original Ratio"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "title",
+        "name": "Title",
+        "limit": 1,
+        "settings": []
+      },
+      {
+        "type": "buy_buttons",
+        "name": "Buy Buttons",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "show_express_buttons",
+            "label": "Show express buttons"
+          }
+        ]
+      },
+      {
+        "type": "quantity_selector",
+        "name": "Quantity selector",
+        "limit": 1,
+        "settings": [
+        ]
+      },
+      {
+        "type": "variant_picker",
+        "name": "Variant picker",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "select",
+            "id": "picker_type",
+            "label": "Picker type",
+            "options": [
+              {
+                "value": "dropdown",
+                "label": "Dropdown"
+              },
+              {
+                "value": "swatches",
+                "label": "Swatches"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "price",
+        "name": "Price",
+        "limit": 1,
+        "settings": []
+      },
+      {
+        "type": "vendor",
+        "name": "Vendor",
+        "limit": 1,
+        "settings": []
+      },
+      {
+        "type": "description",
+        "name": "Description",
+        "limit": 1,
+        "settings": []
+      },
+      {
+        "type": "custom_liquid",
+        "name": "Custom Liquid",
+        "settings": [
+          {
+            "type": "liquid",
+            "id": "custom_liquid",
+            "label": "Custom Liquid"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

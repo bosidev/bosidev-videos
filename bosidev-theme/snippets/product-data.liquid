@@ -1,0 +1,23 @@
+<script type="text/json" data-product-json>
+  {
+    "product": {{ product | json }},
+    "productURL": {{ product.url | json }},
+    "variants": [
+      {%- for variant in product.variants -%}
+        {
+          "id": {{ variant.id }},
+          "inventoryQuantity": {{ variant.inventory_quantity }},
+          "available": {{ variant.available }},
+          "price": {{ variant.price }},
+          "compareAtPrice": {{ variant.compare_at_price | json}},
+          "featuredMedia": {{ variant.featured_media | json }},
+          "options": [
+            {%- for option in variant.options -%} 
+              {{- option | json -}}{%- unless forloop.last -%},{%- endunless -%}
+            {%- endfor -%}
+          ]
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  }
+</script>

@@ -1,0 +1,43 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header Group",
+  "sections": {
+    "header": {
+      "type": "header",
+      "blocks": {
+        "mega_menu_cT4Knw": {
+          "type": "mega_menu",
+          "settings": {
+            "menu_name": "Products",
+            "promotion_link_1": "shopify://collections/automated-collection",
+            "promotion_image_1": "shopify://shop_images/laptop_wave_1.png",
+            "promotion_text_1": "Sale",
+            "promotion_link_2": "shopify://collections",
+            "promotion_image_2": "shopify://shop_images/Main_9129b69a-0c7b-4f66-b6cf-c4222f18028a.jpg",
+            "promotion_text_2": "Another Sale Colection"
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_cT4Knw"
+      ],
+      "settings": {
+        "menu": "main-menu",
+        "show_language_switcher": true,
+        "show_country_switcher": true
+      }
+    }
+  },
+  "order": [
+    "header"
+  ]
+}

@@ -1,0 +1,39 @@
+{%- if cart.empty? -%}
+  No items in cart
+{%- else -%}
+  {%- for item in cart.items -%}
+    <h2>{{ item.title }}</h2><span>{{ item.quantity }}</span><br>
+  {%- endfor -%}
+{%- endif -%}
+
+<div class="drawer__footer drawer__part">
+  {% form 'cart', cart, class: "cart-form" %}
+    {% render 'button', type: 'submit', class: 'button--primary', text: "Pay now", size: "large" %}
+  {% endform %}
+</div>
+
+<button id="ClearCart">Clear</button>
+
+<script>
+  document.querySelector('#ClearCart').addEventListener('click', () => {
+    fetch('/cart/clear.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Cart cleared:', data);
+    })
+    .catch(error => {
+      console.error('Error clearing cart:', error);
+    });
+  })
+</script>
+
+{% schema %}
+  {
+    "name": "t:sections.cart_main.name"
+  }
+{% endschema %}

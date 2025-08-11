@@ -1,0 +1,18 @@
+{%- assign variant_price = product.selected_or_first_available_variant.price | money -%}
+{%- assign variant_compare_at_price = product.selected_or_first_available_variant.price | money -%}
+
+{%- if settings.show_currency -%}
+  {%- assign variant_price = product.selected_or_first_available_variant.price | money_with_currency -%}
+  {%- assign variant_compare_at_price = product.selected_or_first_available_variant.price | money_with_currency -%}
+{%- endif -%}
+
+<div class="product-price">
+  <span class="product-price__price {% if product.selected_or_first_available_variant.price < product.selected_or_first_available_variant.compare_at_price %}text--highlight{% endif %}">
+    {{ variant_price }}
+  </span>
+  {%- if product.selected_or_first_available_variant.price < product.selected_or_first_available_variant.compare_at_price -%}
+    <span class="product-price__compare-at-price text--striked">
+      {{ variant_compare_at_price }}
+    </span>
+  {%- endif -%}
+</div>

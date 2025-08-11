@@ -1,0 +1,204 @@
+{% comment %}
+  Renders the mobile navigation drawer
+
+  Accepts:
+  - section: {Object} Section object
+
+  Usage:
+  {% render 'mobile-navigation' section: section %}
+{% endcomment %}
+
+<nav class="header__menu hidden-desktop">
+  <div class="icon-wrapper" data-open="mobile-menu">
+    {% render 'icon' with 'burger' %}
+  </div>
+  <drawer-element data-drawer-id="mobile-menu">
+    <div class="header__navigation-drawer drawer drawer--left">
+      <div class="drawer__wrapper">
+        <div class="drawer__header">
+          <span class="header__menu-list-close" data-close="mobile-menu" tabindex="0">
+            X
+          </span>
+        </div>
+        <div class="drawer__main">
+          <ul class="header__menu-list vertical-list">
+            {%- for link in section.settings.menu.links -%}
+              {%- assign menu_block = blank -%}
+              {%- assign has_promotion = false -%}
+
+              {%- for block in section.blocks -%}
+                {%- if block.settings.menu_name == link.title -%}
+                  {%- assign menu_block = block -%}
+
+                  {%- for i in (1..2) -%}
+                    {%- assign promotion_link = "promotion_link_" | append: i -%}
+                    {%- if block.settings[promotion_link] != blank -%}
+                      {%- assign has_promotion = true -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              <li class="header__menu-item">
+                <details is="sliding-details" data-trigger-id="test-{{ forloop.index }}">
+                  <summary>
+                    <div class="header__menu-item">
+                      <a>
+                        {{ link.title }}
+                      </a>
+                      {%- if link.links.size > 0 -%}
+                        {% render 'icon' with 'chevron', classes: 'icon--xs' %}
+                      {%- endif -%}
+                    </div>
+                  </summary>
+                  <div class="header__navigation-layer drawer__layer" data-element-id="test-{{ forloop.index }}">
+                    <div class="header__menu-list-close" data-close-id="test-{{ forloop.index }}" tabindex="0">
+                      <span>{% render 'icon' with 'arrow', classes: 'icon--m' %}</span><span>{{ link.title }}</span>
+                    </div>
+                    <ul class="header__menu-list vertical-list">
+                      {%- for sublink in link.links -%}
+                        <li class="header__menu-item">
+                          {%- if sublink.links.size > 0 -%}
+                          <details is="sliding-details" data-trigger-id="subtest-{{ forloop.index }}">
+                            <summary>
+                          {%- endif -%}
+                              <div class="header__menu-item">
+                                <a>
+                                  {{ sublink.title }}
+                                </a>
+                                {%- if sublink.links.size > 0 -%}
+                                  {% render 'icon' with 'chevron', classes: 'icon--m' %}
+                                {%- endif -%}
+                              </div>
+                              {%- if sublink.links.size > 0 -%}
+                            </summary>
+                              {%- endif -%}
+
+                            <div class="header__navigation-layer drawer__layer" data-element-id="subtest-{{ forloop.index }}">
+                              <div class="header__menu-list-close" data-close-id="subtest-{{ forloop.index }}" tabindex="0">
+                                <span>{% render 'icon' with 'arrow', classes: 'icon--m' %}</span><span>{{ sublink.title }}</span>
+                              </div>
+                              <ul class="header__menu-list vertical-list">
+                                {%- for grand_sublink in sublink.links -%}
+                                  <li class="header__menu-item text--subdued">
+                                    <a href="{{ grand_sublink.url }}">
+                                      {{ grand_sublink.title }}
+                                    </a>
+                                  </li>
+                                {%- endfor -%}
+                              </ul>
+                            </div>
+                            {%- if sublink.links.size > 0 -%}
+                          </details>
+                        {%- endif -%}
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                    {%- if has_promotion -%}
+                      <div class="horizontal-seperator"></div>
+                      <div class="header__promotions">
+                        {%- for i in (1..2) -%}
+                          {%- assign promotion_link = "promotion_link_" | append: i -%}
+          
+                          {%- if menu_block.settings[promotion_link] != blank -%}
+                            {%- assign promotion_image = "promotion_image_" | append: i -%}
+                            {%- assign promotion_text = "promotion_text_" | append: i -%}
+                            {%- assign promotion_cover = menu_block.settings[promotion_link].object.featured_image -%}
+          
+                            {%- if menu_block.settings[promotion_image] != blank -%}
+                              {%- assign promotion_cover = menu_block.settings[promotion_image] -%}
+                            {%- endif -%}
+                            
+                            <div class="promotion-block">
+                              <a href="{{ menu_block.settings[promotion_link] }}">
+                                <div class="image-wrapper">
+                                  {{ promotion_cover | image_url: width: 200 | image_tag: height: 200, width: 200 }}
+                                </div>
+                              </a>
+                              {%- if menu_block.settings[promotion_text] != blank -%}
+                                <span class="text-center">{{ menu_block.settings[promotion_text] }}</span>
+                              {%- endif -%}
+                            </div>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+                </div>
+              </details>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+        <div class="drawer__footer">
+          <div class="header__bottom-wrapper">
+            {%- if section.settings.show_language_switcher or section.settings.show_country_switcher -%}
+              <div class="header__bottom-bar">
+                {%- if section.settings.show_language_switcher and localization.available_languages.size > 1 -%}
+                  <div class="language-switcher">
+                    <localization-form>
+                      {% form 'localization' %}
+                        <details>
+                          <summary>
+                            {{ localization.language.endonym_name | capitalize }} {{ localization.country | image_url: width: 32 | image_tag: class: 'icon--xs' }}
+                            {% render 'icon' with 'chevron', classes: "icon--xs" %}
+                          </summary>
+                          
+                          <div class="details-content details-content--off">
+                            <ul id="LanguageList" role="list">
+                              {% for language in localization.available_languages %}
+                                {%- if language != localization.language -%}
+                                  <li class="disclosure__item" tabindex="-1">
+                                    <a href="#"{% if language.iso_code == localization.language.iso_code %} aria-current="true"{% endif %} hreflang="{{ language.iso_code }}" lang="{{ language.iso_code }}" data-value="{{ language.iso_code }}">
+                                      {{ language.endonym_name | capitalize }}
+                                    </a>
+                                  </li>
+                                {%- endif -%}
+                              {% endfor %}
+                            </ul>
+                          </div>
+                  
+                          <input type="hidden" name="language_code" value="{{ localization.language.iso_code }}">
+                        </details>
+                      {% endform %}
+                    </localization-form>
+                  </div>
+                {%- endif -%}
+
+                {%- if localization.available_countries.size > 1 and section.settings.show_country_switcher -%}
+                  <div class="country-switcher">
+                    <localization-form>
+                      {% form 'localization' %}
+                        <details>
+                          <summary>
+                            {{ localization.country.name }} ({{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})
+                            {% render 'icon' with 'chevron', classes: "icon--xs" %}
+                          </summary>
+
+                          <div class="details-content details-content--off">
+                            <ul id="CountryList" role="list" class="disclosure__list">
+                              {% for country in localization.available_countries %}
+                                {%- if country != localization.country -%}
+                                  <li class="disclosure__item" tabindex="-1">
+                                    <a href="#"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-value="{{ country.iso_code }}">
+                                      {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }}) {{ country | image_url: width: 32 | image_tag: class: 'icon--xs' }}
+                                    </a>
+                                  </li>
+                                {%- endif -%}
+                              {% endfor %}
+                            </ul>
+                          </div>
+                    
+                          <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+                        </details>
+                      {% endform %}
+                    </localization-form>
+                  </div>
+                {% endif %}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </drawer-element>
+</nav>

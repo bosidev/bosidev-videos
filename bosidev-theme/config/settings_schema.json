@@ -1,0 +1,271 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Bosidev Theme",
+    "theme_author": "Bosidev",
+    "theme_version": "1.0.0",
+    "theme_documentation_url": "https:\/\/www.youtube.com\/@bosidev",
+    "theme_support_url": "https:\/\/www.linkedin.com\/in\/bastian-fritsch-2353271a2\/"
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "heading_font",
+        "label": "Heading font",
+        "default": "roboto_n4"
+      },
+      {
+        "type": "range",
+        "id": "heading_font_size",
+        "label": "Heading font size",
+        "min": 42,
+        "max": 84,
+        "unit": "px",
+        "default": 52
+      },
+      {
+        "type": "font_picker",
+        "id": "base_font",
+        "label": "Heading font",
+        "default": "roboto_n4"
+      },
+      {
+        "type": "range",
+        "id": "base_font_size",
+        "label": "Base font size",
+        "min": 12,
+        "max": 24,
+        "unit": "px",
+        "default": 14
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "background_primary",
+        "label": "Background primary",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "background_secondary",
+        "label": "Background secondary",
+        "default": "#f4f4f4"
+      },
+      {
+        "type": "color",
+        "id": "text",
+        "label": "Text",
+        "default": "#161b33"
+      },
+      {
+        "type": "color",
+        "id": "primary_button_background",
+        "label": "Primary button background",
+        "default": "#161b33"
+      },
+      {
+        "type": "color",
+        "id": "primary_button_text",
+        "label": "Primary button text",
+        "default": "#fffbf0"
+      },
+      {
+        "type": "color",
+        "id": "secondary_button_background",
+        "label": "Secondary button background",
+        "default": "#D3D3D3"
+      },
+      {
+        "type": "color",
+        "id": "secondary_button_text",
+        "label": "Secondary button text",
+        "default": "#161b33"
+      },
+      {
+        "type": "color",
+        "id": "brand_accent",
+        "label": "Brand accent",
+        "default": "#00ec86"
+      },
+      {
+        "type": "color",
+        "id": "highlight_accent",
+        "label": "Highlight accent",
+        "default": "#c30010"
+      },
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "select",
+        "id": "page_width",
+        "label": "Page width",
+        "options": [
+          {
+            "label": "1200",
+            "value": "1200px"
+          },
+          {
+            "label": "1400",
+            "value": "1400px"
+          },
+          {
+            "label": "1600",
+            "value": "1600px"
+          },
+          {
+            "label": "Max",
+            "value": "100%"
+          }
+        ],
+        "default": "1600px"
+      },
+      {
+        "type": "range",
+        "id": "border_radius",
+        "label": "Border radius",
+        "min": 0,
+        "max": 20,
+        "unit": "px",
+        "default": 8
+      }
+    ]
+  },
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Shop logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width_desktop",
+        "label": "Logo width desktop",
+        "min": 100,
+        "max": 300,
+        "unit": "px",
+        "default": 150,
+        "step": 5
+      },
+      {
+        "type": "range",
+        "id": "logo_width_mobile",
+        "label": "Logo width mobile",
+        "min": 20,
+        "max": 100,
+        "unit": "px",
+        "default": 50,
+        "step": 5
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "Will be scaled down to 32 x 32px"
+      }
+    ]
+  },
+  {
+    "name": "Search",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Predictive search"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_product_search",
+        "label": "Enable product search",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_collection_search",
+        "label": "Enable collection search",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_articles_search",
+        "label": "Enable articles search",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_pages_search",
+        "label": "Enable pages search",
+        "default": false
+      },
+      {
+        "type": "collection",
+        "id": "predictive_recommendations",
+        "label": "Predictive search recommendations"
+      },
+      {
+        "type": "link_list",
+        "id": "predictive_side_menu",
+        "label": "Predictive search side menu"
+      },
+      {
+        "type": "range",
+        "id": "predictive_recommendations_quantity",
+        "label": "Predictive search recommendations quantity",
+        "info": "Here you can set the quantity of products to show",
+        "min": 2,
+        "max": 8,
+        "step": 2,
+        "default": 4
+      }
+    ]
+  },
+  {
+    "name": "Product Cards",
+    "settings": [
+      {
+        "type": "select",
+        "id": "product_card_image_ratio",
+        "label": "Product card image ratio",
+        "options": [
+          {
+            "value": "square",
+            "label": "1:1"
+          },
+          {
+            "value": "rectangle",
+            "label": "4:5"
+          },
+          {
+            "value": "original",
+            "label": "Original Ratio"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Currency Format",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_currency",
+        "label": "Show currency",
+        "info": "Check this to show currency on prices"
+      }
+    ]
+  }
+]

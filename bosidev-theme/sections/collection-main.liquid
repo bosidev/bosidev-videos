@@ -1,0 +1,82 @@
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+
+{%- paginate collection.products by section.settings.collection_items -%}
+  <div class="collection-main container">
+    <h1>{{ collection.title }}</h1>
+    <div class="collection-main__wrapper">
+      <div class="collection__sort {% if section.settings.activate_filter_drawer %}collection__sort--filter{% endif %}">
+        {%- if section.settings.activate_filter_drawer -%}
+          <button class="button button--primary" data-open="filters">FIlters</button>
+        {%- endif -%}
+        {% render 'sort' %}
+      </div>
+      <div class="collection__content">
+        {%- if section.settings.activate_filter_drawer -%}
+          <drawer-element data-drawer-id="filters" data-open-overlay>
+            <div class="drawer drawer--left">
+              <button data-close="filters" >X</button>
+              <div class="collection__filters">
+                {% render 'filters' %}
+              </div>
+            </div>
+          </drawer-element>
+        {%- else -%}
+          <div class="collection__filters">
+            {% render 'filters' %}
+          </div>
+        {%- endif -%}
+        <div class="collection__products">
+          <div class="grid" style="--grid-column-size-desktop: 4;--grid-column-size-mobile: 2; --grid-column-size-tablet: 3">
+            {%- for product in collection.products -%}
+              {%- render 'product-card', product: product, secondary_image_hover: section.settings.secondary_image_hover -%}
+            {%- endfor -%}
+          </div>
+
+          <pagination-item class="pagination" data-section-id="{{ section.id }}" data-paginate-container=".collection-main">
+            {%- for part in paginate.parts -%}
+              {% if part.is_link -%}
+                <button class="button button--primary pagination__button" data-page="{{ part.title }}" data-href="{{ part.url }}">{{ part.title }}</button>
+              {%- else -%}
+                <button class="button {% if part.title == paginate.current_page %}button--secondary{% else %}button--primary{% endif %} pagination__button">{{ part.title }}</button>
+              {%- endif -%}
+            {%- endfor -%}
+          </pagination-item>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endpaginate -%}
+
+{% schema %}
+  {
+    "name": "t:sections.collection_main.name",
+    "tag": "section",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "secondary_image_hover",
+        "label": "Show secondary image on hover",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "collection_items",
+        "label": "Collection items to show on one page",
+        "min": 4,
+        "max": 248,
+        "step": 4,
+        "default": 20
+      },
+      {
+        "type": "header",
+        "content": "Filter"
+      },
+      {
+        "type": "checkbox",
+        "id": "activate_filter_drawer",
+        "label": "Activate filter drawer",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

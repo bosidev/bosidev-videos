@@ -1,0 +1,138 @@
+{% comment %}
+  Renders the desktop navigation
+
+  Accepts:
+  - section: {Object} Section object
+
+  Usage:
+  {% render 'desktop-navigation' section: section %}
+{% endcomment %}
+
+<nav class="header__menu hidden-phone hidden-tablet">
+  <ul class="header__menu-list horizontal-list">
+    {%- for link in section.settings.menu.links -%}
+      {%- assign mega_menu_block = blank -%}
+      {%- assign has_promotion = false -%}
+
+      {%- for block in section.blocks -%}
+        {%- if block.settings.menu_name == link.title and link.links.size > 0 -%}
+          {%- assign mega_menu_block = block -%}
+
+          {%- for i in (1..2) -%}
+            {%- assign promotion_link = "promotion_link_" | append: i -%}
+            {%- if block.settings[promotion_link] != blank -%}
+              {%- assign has_promotion = true -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      <li>
+        {%- if mega_menu_block != blank -%}
+          <mega-menu>
+        {%- endif -%}
+        <details {% if link.links.size > 0 and mega_menu_block == blank %}class="header__dropdown-menu" is="hoverable-details"{% endif %}>
+          <summary class="header__menu-item" {% if link.links.size > 0 %}data-open-trigger{% endif %}>
+              <a href="{{ link.url }}">
+                {{ link.title }}
+              </a>
+              {%- if mega_menu_block != blank -%}
+                <div class="hover-buffer" data-hover-buffer></div>
+              {%- endif -%}
+          </summary>
+          {%- if mega_menu_block != blank -%}
+            <div class="header__mega-menu-wrapper {% if has_promotion %}header__mega-menu-wrapper--has-megamenu{% endif %}" data-open-element>
+              <ul class="header__mega-menu horizontal-list">
+                {%- for sublink in link.links -%}
+                  <li>
+                    <div class="header__mega-menu-item-wrapper vertical-list">
+                        <a class="header__menu-item text--bold" href="{{ sublink.url }}">
+                          {{ sublink.title }}
+                        </a>
+                      {%- if sublink.links.size > 0 -%}
+                        <ul class="header__menu-list vertical-list">
+                          {%- for grand_sublink in sublink.links -%}
+                            <li class="header__menu-item text--subdued">
+                              <a href="{{ grand_sublink.url }}">
+                                {{ grand_sublink.title }}
+                              </a>
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      {%- endif -%}
+                    </div>
+                  </li>
+                {%- endfor -%}
+              </ul>
+              {%- if has_promotion -%}
+                <div class="vertical-seperator"></div>
+                <div class="header__promotions">
+                  {%- for i in (1..2) -%}
+                    {%- assign promotion_link = "promotion_link_" | append: i -%}
+
+                    {%- if mega_menu_block.settings[promotion_link] != blank -%}
+                      {%- assign promotion_image = "promotion_image_" | append: i -%}
+                      {%- assign promotion_text = "promotion_text_" | append: i -%}
+                      {%- assign promotion_cover = mega_menu_block.settings[promotion_link].object.featured_image -%}
+
+                      {%- if mega_menu_block.settings[promotion_image] != blank -%}
+                        {%- assign promotion_cover = mega_menu_block.settings[promotion_image] -%}
+                      {%- endif -%}
+                      
+                      <div class="promotion-block">
+                        <a href="{{ mega_menu_block.settings[promotion_link] }}">
+                          <div class="image-wrapper">
+                            {{ promotion_cover | image_url: width: 200 | image_tag: height: 200, width: 200 }}
+                          </div>
+                        </a>
+                        {%- if mega_menu_block.settings[promotion_text] != blank -%}
+                          <span class="text-center">{{ mega_menu_block.settings[promotion_text] }}</span>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- elsif link.links.size > 0 -%}
+            <div class="header__dropdown-menu-wrapper" data-open-element >
+              <ul class="header__dropdown-menu vertical-list">
+                {%- for sublink in link.links -%}
+                  <li>
+                    <div class="header__dropdown-menu-item-wrapper vertical-list">
+                      <details {% if sublink.links.size > 0 %}is="hoverable-details"{% endif %}>
+                        <summary {% if sublink.links.size > 0 %}data-open-trigger{% endif %}>
+                            <a class="header__menu-item text--bold" href="{{ sublink.url }}">
+                              {{ sublink.title }}
+                              {%- if sublink.links.size > 0 -%}
+                                {% render 'icon' with 'chevron', classes: 'icon--xs' %}
+                              {%- endif -%}
+                            </a>
+                        </summary>
+                        {%- if sublink.links.size > 0 -%}
+                          <ul class="header__grand-sub-menu-list vertical-list" data-open-element >
+                            {%- for grand_sublink in sublink.links -%}
+                              <li class="header__menu-item text--subdued">
+                                <a href="{{ grand_sublink.url }}">
+                                  {{ grand_sublink.title }}
+                                </a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </details>
+                    </div>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        </details>
+
+        {%- if mega_menu_block != blank -%}
+          </mega-menu>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>

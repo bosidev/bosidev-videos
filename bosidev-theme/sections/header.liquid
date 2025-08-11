@@ -1,0 +1,216 @@
+{{ 'header.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'header.js' | asset_url }}" defer="defer"></script>
+
+{% style %}
+  #shopify-section-{{ section.id }} .image-wrapper--logo {
+    width: {{ settings.logo_width_desktop }}px;
+  }
+
+  @media screen and (max-width: 767px) {
+    #shopify-section-{{ section.id }} .image-wrapper--logo {
+      width: {{ settings.logo_width_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="container">
+  <div class="header">
+    {% render 'desktop-navigation', section: section %}
+    {% render 'mobile-navigation', section: section %}
+
+    <div class="header__logo">
+      <a href="{{ routes.root_url }}">
+      {%- if settings.logo != blank -%}
+        <div class="image-wrapper--logo">
+          {{ settings.logo | image_url: width: 250 | image_tag }}
+        </div>
+      {%- else -%}
+        <span>{{ shop.name }}</span>
+      {%- endif -%}
+      </a>
+    </div>
+    <div class="header__aside">
+      {%- if section.settings.show_language_switcher or section.settings.show_country_switcher -%}
+        <div class="header__switcher hidden-phone">
+          {%- if section.settings.show_language_switcher and localization.available_languages.size > 1 -%}
+            <div class="language-switcher">
+              <localization-form>
+                {% form 'localization' %}
+                  <details>
+                    <summary>
+                      {{ localization.language.endonym_name | capitalize }} {{ localization.country | image_url: width: 32 | image_tag: class: 'icon--xs' }}
+                      {% render 'icon' with 'chevron', classes: "icon--xs" %}
+                    </summary>
+                    
+                    <div class="details-content">
+                      <ul id="LanguageList" role="list">
+                        {% for language in localization.available_languages %}
+                          {%- if language != localization.language -%}
+                            <li class="disclosure__item" tabindex="-1">
+                              <a href="#"{% if language.iso_code == localization.language.iso_code %} aria-current="true"{% endif %} hreflang="{{ language.iso_code }}" lang="{{ language.iso_code }}" data-value="{{ language.iso_code }}">
+                                {{ language.endonym_name | capitalize }}
+                              </a>
+                            </li>
+                          {%- endif -%}
+                        {% endfor %}
+                      </ul>
+                    </div>
+            
+                    <input type="hidden" name="language_code" value="{{ localization.language.iso_code }}">
+                  </details>
+                {% endform %}
+              </localization-form>
+            </div>
+          {%- endif -%}
+
+          {%- if localization.available_countries.size > 1 and section.settings.show_country_switcher -%}
+            <div class="country-switcher">
+              <localization-form>
+                {% form 'localization' %}
+                  <details>
+                    <summary>
+                      {{ localization.country.name }} ({{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})
+                      {% render 'icon' with 'chevron', classes: "icon--xs" %}
+                    </summary>
+
+                    <div class="details-content">
+                      <ul id="CountryList" role="list" class="disclosure__list">
+                        {% for country in localization.available_countries %}
+                          {%- if country != localization.country -%}
+                            <li class="disclosure__item" tabindex="-1">
+                              <a href="#"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-value="{{ country.iso_code }}">
+                                {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }}) {{ country | image_url: width: 32 | image_tag: class: 'icon--xs' }}
+                              </a>
+                            </li>
+                          {%- endif -%}
+                        {% endfor %}
+                      </ul>
+                    </div>
+              
+                    <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+                  </details>
+                {% endform %}
+              </localization-form>
+            </div>
+          {% endif %}
+        </div>
+      {%- endif -%}
+      <div class="header__icons">
+        <div class="icon-wrapper">
+          <details id="predictive-search__details">
+            <summary>
+              {% render 'icon' with 'search', class: "icon--pointer" %}
+            </summary>
+            <div class="predictive-search">
+              <div class="container">
+                <h2 class="visually-hidden">Predictive Search</h2>
+                <div class="predictive-search__wrapper">
+                  {% render 'predictive-search-component' %}
+                </div>
+              </div>
+            </div>
+          </details>
+        </div>
+        <div class="icon-wrapper">
+          <a href="{{ routes.account_url }}">
+            {% render 'icon' with 'customer-account' %}
+          </a>
+        </div>
+        <div class="icon-wrapper">
+          <a data-open="cart-drawer">
+            {% render 'icon' with 'cart' %}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const headerElement = document.getElementById('shopify-section-{{ section.id }}'),
+      headerHeight = headerElement.clientHeight
+      
+    document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
+  })();
+</script>
+
+{% schema %}
+  {
+    "name": "Header",
+    "max_blocks": 2,
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Menu"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_language_switcher",
+        "label": "Show language switcher"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_country_switcher",
+        "label": "Show country switcher"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "mega_menu",
+        "name": "Mega Menu",
+        "settings":[
+          {
+            "type": "header",
+            "content": "Settings"
+          },
+          {
+            "type": "text",
+            "id": "menu_name",
+            "label": "Menu Name",
+            "info": "Put the name of the menu that you want to turn into a mega menu in here. Only top level links work for that"
+          },
+          {
+            "type": "header",
+            "content": "Promotion 1"
+          },
+          {
+            "type": "url",
+            "id": "promotion_link_1",
+            "label": "Promotion Link"
+          },
+          {
+            "type": "image_picker",
+            "id": "promotion_image_1",
+            "label": "Promotion Image"
+          },
+          {
+            "type": "text",
+            "id": "promotion_text_1",
+            "label": "Promotion Text"
+          },
+          {
+            "type": "header",
+            "content": "Promotion 2"
+          },
+          {
+            "type": "url",
+            "id": "promotion_link_2",
+            "label": "Promotion Link"
+          },
+          {
+            "type": "image_picker",
+            "id": "promotion_image_2",
+            "label": "Promotion Image"
+          },
+          {
+            "type": "text",
+            "id": "promotion_text_2",
+            "label": "Promotion Text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

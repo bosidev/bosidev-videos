@@ -1,0 +1,376 @@
+{% 
+  # TODO: Add animation to container
+  # TODO: Add slider block
+%}
+
+{% style %}
+  #shopify-section-{{ section.id }} .style-wrapper {
+    {% if section.settings.background_color != 'rgba(0,0,0,0)' %}
+      --background-primary: {{ section.settings.background_color.red }}, {{ section.settings.background_color.green }}, {{ section.settings.background_color.blue }};
+    {% endif %}
+  }
+{% endstyle %}
+
+<div class="style-wrapper {{ section.settings.spacing | class_list }} {{ section.settings.size | class_list }}">
+  <div class="container">
+    <div class="custom-section {{ section.settings.layout | class_list }}">
+      {%- content_for 'blocks' -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "style.spacing_panel",
+      "id": "spacing",
+      "label": "Spacing",
+      "default": {
+        "padding": "20px",
+      }
+    },
+    {
+      "type": "style.layout_panel",
+      "id": "layout",
+      "label": "Layout"
+    },
+    {
+      "type": "style.size_panel",
+      "id": "size",
+      "label": "Size"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@theme"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom"
+    },
+    {
+      "name": "Image with text",
+      "settings": {
+        "spacing": {
+          "padding-inline-start": "0px",
+          "padding-inline-end": "0px",
+          "padding-block-start": "20px",
+          "padding-block-end": "20px"
+        },
+        "layout": {
+          "flex-direction": "row",
+          "flex-wrap": "nowrap",
+          "row-gap": "0px",
+          "column-gap": "0px",
+          "align-items": "center",
+          "justify-content": "flex-start"
+        },
+        "size": {
+          "height": "auto"
+        },
+        "background_color": "#f4f4f4"
+      },
+      "blocks": [
+        {
+          "type": "image",
+          "settings": {
+            "lazy_loading": false,
+            "size": {
+              "width": "50%",
+              "flex-grow": "0",
+              "height": "auto"
+            },
+            "spacing": {
+              "padding-block-start": "0px"
+            }
+          }
+        },
+        {
+          "type": "container",
+          "settings": {
+            "background_color": "rgba(0,0,0,0)",
+            "size": {
+              "width": "100%",
+              "flex-grow": "1"
+            },
+            "spacing": {
+              "padding-block-start": "0px",
+              "padding-inline-start": "100px",
+              "padding-inline-end": "100px"
+            },
+            "layout": {
+              "flex-direction": "column"
+            }
+          },
+          "blocks": [
+            {
+              "type": "heading",
+              "settings": {
+                "content": "Heading",
+                "heading_type": "h2",
+                "heading_color": "rgba(0,0,0,0)",
+                "size": {},
+                "spacing": {
+                  "margin-block-start": "0px",
+                  "margin-block-end": "20px",
+                  "margin-inline-start": "0px",
+                  "margin-inline-end": "0px"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "settings": {
+                "content": "<p>You can put a nice text in here to describe your brand story, a product or a collection etc.<br/>Put alot of information here and combine it with a image on the right to complete this look.</p>",
+                "text_alignment": "left",
+                "text_color": "rgba(0,0,0,0)",
+                "size": {},
+                "spacing": {
+                  "padding-block-start": "0px",
+                  "padding-inline-start": "0px",
+                  "padding-block-end": "0px",
+                  "padding-inline-end": "0px",
+                  "margin-block-start": "0px",
+                  "margin-block-end": "20px",
+                  "margin-inline-start": "0px",
+                  "margin-inline-end": "0px"
+                }
+              }
+            },
+            {
+              "type": "button",
+              "settings": {
+                "button_text": "Button Text",
+                "button_url": "",
+                "button_classes": "",
+                "background_color": "#7B0323",
+                "text_color": "#ffffff",
+                "hover_background_color": "rgba(0,0,0,0)",
+                "hover_text_color": "rgba(0,0,0,0)",
+                "size": {
+                  "width": "200px"
+                },
+                "spacing": {
+                  "padding-block-start": "20px",
+                  "padding-block-end": "20px"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Logo list",
+      "settings": {
+        "spacing": {},
+        "layout": {
+          "align-items": "center",
+          "justify-content": "space-around",
+          "row-gap": "20px",
+          "column-gap": "0px",
+          "flex-direction": "column"
+        },
+        "size": {},
+        "background_color": "#fffbf0"
+      },
+      "blocks": [
+        {
+          "type": "container",
+          "settings": {
+            "background_color": "",
+            "size": {},
+            "spacing": {},
+            "layout": {}
+          },
+          "blocks": [
+            {
+              "type": "heading",
+              "settings": {
+                "content": "LOGO LIST",
+                "heading_type": "h2",
+                "heading_color": "",
+                "size": {},
+                "spacing": {}
+              }
+            }
+          ],
+        },
+        {
+          "type": "container",
+          "settings": {
+            "background_color": "",
+            "size": {
+              "width": "100%",
+              "flex-grow": "1"
+            },
+            "spacing": {},
+            "layout": {
+              "justify-content": "space-around",
+              "row-gap": "0px",
+              "column-gap": "20px"
+            }
+          },
+          "blocks": [
+            {
+              "type": "container",
+              "settings": {
+                "background_color": "",
+                "size": {},
+                "spacing": {},
+                "layout": {
+                  "flex-direction": "column",
+                  "align-items": "center"
+                }
+              },
+              "blocks": [
+                {
+                  "type": "image",
+                  "settings": {
+                    "lazy_loading": false,
+                    "size": {
+                      "width": "75px",
+                      "height": "auto"
+                    },
+                    "spacing": {}
+                  }
+                },
+                {
+                  "type": "heading",
+                  "settings": {
+                    "content": "LOGO 1",
+                    "heading_type": "h4",
+                    "heading_color": "",
+                    "size": {},
+                    "spacing": {}
+                  }
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "settings": {
+                "background_color": "",
+                "size": {},
+                "spacing": {},
+                "layout": {
+                  "flex-direction": "column",
+                  "align-items": "center",
+                  "justify-content": "center"
+                }
+              },
+              "blocks": [
+                {
+                  "type": "image",
+                  "settings": {
+                    "lazy_loading": false,
+                    "size": {
+                      "width": "75px"
+                    },
+                    "spacing": {}
+                  }
+                },
+                {
+                  "type": "heading",
+                  "settings": {
+                    "content": "LOGO 2",
+                    "heading_type": "h4",
+                    "heading_color": "",
+                    "size": {},
+                    "spacing": {}
+                  }
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "settings": {
+                "background_color": "",
+                "size": {},
+                "spacing": {},
+                "layout": {
+                  "flex-direction": "column",
+                  "align-items": "center"
+                }
+              },
+              "blocks": [
+                {
+                  "type": "image",
+                  "settings": {
+                    "lazy_loading": false,
+                    "size": {
+                      "width": "75px"
+                    },
+                    "spacing": {}
+                  }
+                },
+                {
+                  "type": "heading",
+                  "settings": {
+                    "content": "LOGO 3",
+                    "heading_type": "h4",
+                    "heading_color": "",
+                    "size": {},
+                    "spacing": {}
+                  }
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "settings": {
+                "background_color": "",
+                "size": {},
+                "spacing": {},
+                "layout": {
+                  "flex-direction": "column",
+                  "align-items": "center"
+                }
+              },
+              "blocks": [
+                {
+                  "type": "image",
+                  "settings": {
+                    "lazy_loading": false,
+                    "size": {
+                      "width": "75px"
+                    },
+                    "spacing": {}
+                  }
+                },
+                {
+                  "type": "heading",
+                  "settings": {
+                    "content": "LOGO 4",
+                    "heading_type": "h4",
+                    "heading_color": "",
+                    "size": {},
+                    "spacing": {}
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+    }
+  ]
+}
+{% endschema %}

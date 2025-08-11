@@ -1,0 +1,119 @@
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<product-info class="product__info vertical-list">
+  {%- for block in section.blocks -%}
+    <div class="product__info-block">
+      {%- case block.type -%}
+        {%- when '@app' -%}
+          {% render block %}
+    
+        {%- when 'title' -%}
+            <h1>{{ product.title }}</h1>
+
+        {%- when 'buy_buttons' -%}
+          <product-form>
+            {% form 'product', product, id: product_form_id %}
+              <input type="hidden" name="quantity" min="1" value="1">
+              <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+              <div class="product__payment-buttons">
+                {%- capture button_text -%}
+                  {%- if product.selected_or_first_available_variant.available -%}
+                    {{ 'product.general.add_to_cart' | t }}
+                  {%- else -%}
+                    {{ 'product.general.out_of_stock' | t }}
+                  {%- endif -%}
+                {%- endcapture -%}
+
+                {%- assign button_class = 'product__atc-button' -%}
+
+                {%- if product.selected_or_first_available_variant.available -%}
+                  {%- assign button_class = button_class | append: ' button--primary' -%}
+                  {%- assign is_disabled = false -%}
+                {%- else -%}
+                  {%- assign button_class = button_class | append: ' button--secondary' -%}
+                  {%- assign is_disabled = true -%}
+                {%- endif -%}
+
+                {% render 'button', type: "submit", text: button_text, class: button_class, disabled: is_disabled, size: 'large' %}
+
+                {%- if block.settings.show_express_buttons -%}
+                  {{ form | payment_button }}
+                {%- endif -%}
+              </div>
+            {% endform %}
+          </product-form>
+
+        {%- when 'variant_picker' -%}
+          {%- unless product.has_only_default_variant -%}
+            <variant-picker class="product__variant-picker">
+              <ul class="vertical-list">
+                {% for option in product.options %}
+                  {%- assign option_position = forloop.index0 -%}
+
+                  {%- case block.settings.picker_type -%}
+                    {%- when 'dropdown' -%}
+                      <li class="vertical-list variant-dropdown">
+                        <label for="{{ option }}">{{ option }}: <span class="variant-dropdown__option-value">{{ product.selected_or_first_available_variant.options[option_position] }}</span></label>
+                        <select id="{{ option }}" data-position="{{ option_position }}" data-type="variant-input">
+                          {% for value in product.options_with_values[option_position].values %}
+                            <option value="{{ value }}" {% if product.selected_or_first_available_variant.options[option_position] == value %}selected{% endif %}>{{ value }}</option>
+                          {% endfor %}
+                        </select>
+                      </li>
+                    
+                    {%- when 'swatches' -%}
+                      <li class="vertical-list variant-swatches__group">
+                        <label for="{{ option }}">{{ option }}: <span class="variant-dropdown__option-value">{{ product.selected_or_first_available_variant.options[option_position] }}</span></label>
+                        <input id="{{ option }}" type="hidden" data-position="{{ option_position }}" value="{{ product.selected_or_first_available_variant.options[option_position] }}" data-type="variant-input">
+
+                        <ul class="horizontal-list variant-swatches__wrapper">
+                          {% for value in product.options_with_values[option_position].values %}
+                            <li class="swatch" {% if product.selected_or_first_available_variant.options[option_position] == value %}selected{% endif %}>
+                              <button class="swatch__button" value="{{ value }}">{{ value }}</button>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </li>
+                  {%- endcase -%}
+                {% endfor %}
+              </ul>
+          
+              {%- comment -%}
+              <select>
+                {%- for variant in product.variants -%}
+                <option value="{{ variant.id }}" {% if variant == current_variant %}selected="selected"{% endif %}>
+                  {{ variant.title }} {{ variant.inventory_quantity }}
+                </option>
+                {%- endfor -%}
+              </select>
+              {%- endcomment -%}
+            </variant-picker>
+          {%- endunless -%}
+
+        {%- when 'quantity_selector' -%}
+          <script src="{{ 'quantity-selector.js' | asset_url }}" defer></script>
+
+          <quantity-selector class="quantity-selector" data-form="{{ product_form_id }}">
+            <button class="quantity-selector__button" id="quantity-minus">-</button>
+            <input class="input" type="number" min="1" max="{{ current_variant.inventory_quantity }}" value="1">
+            <button class="quantity-selector__button" id="quantity-plus">+</button>
+          </quantity-selector>
+
+        {%- when 'price' -%}
+          {% comment %} TODO: Create prive snippet {% endcomment %}
+          {% render 'price' %}
+    
+        {%- when 'vendor' -%}
+          {{ product.vendor }}
+    
+        {%- when 'description' -%}
+          {{ product.description }}
+    
+        {%- when 'custom_liquid' -%}
+          {{ block.settings.custom_liquid }}
+    
+      {%- endcase -%}
+    </div>
+  {%- endfor -%}
+</product-info>

@@ -1,0 +1,96 @@
+<style>
+  #{{ block.id }} {
+    {% if block.settings.heading_color != 'rgba(0,0,0,0)' %}
+      color: rgb({{ block.settings.heading_color.red }}, {{ block.settings.heading_color.green }},{{ block.settings.heading_color.blue }});
+    {% endif %}
+  }
+</style>
+
+<div 
+  class="heading-block {{ block.settings | class_list }}" 
+  id="{{ block.id }}"
+  {{ block.shopify_attributes }}
+>
+  <{{ block.settings.heading_type }} class="{{ block.settings.heading_type }}">
+    {{ block.settings.content }}
+  </{{block.settings.heading_type}}>
+</div>
+
+{% schema %}
+{
+  "name": "Heading",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "content",
+      "label": "Content",
+      "default": "Heading"
+    },
+    {
+      "type": "header",
+      "content": "Settings"
+    },
+    {
+      "type": "select",
+      "id": "heading_type",
+      "label": "Heading type",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        },
+        {
+          "value": "h6",
+          "label": "H6"
+        },
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+    },
+    {
+      "type": "style.size_panel",
+      "id": "size",
+      "label": "Size"
+    },
+    {
+      "type": "style.spacing_panel",
+      "id": "spacing",
+      "label": "Spacing"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Heading"
+    }
+  ]
+}
+{% endschema %}

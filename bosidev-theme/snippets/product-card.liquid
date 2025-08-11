@@ -1,0 +1,37 @@
+{% comment %}
+  Renders a product card in the given context
+
+  Accepts:
+  - product: {Object} Product object
+
+  Usage:
+  {% render 'product-card' product: product %}
+{% endcomment %}
+
+<div class="product-card">
+  <div class="product-card__media">
+    <a href="{{ product.url }}">
+      {% case settings.product_card_image_ratio %}
+        {% when 'original' %}
+          {%- assign aspect_ratio = product.featured_image.aspect_ratio -%}
+        {% when 'square' %}
+          {%- assign aspect_ratio = 1 -%}
+        {% when 'rectangle' %}
+          {%- assign aspect_ratio = 0.8 -%}
+        {% else %}
+          {%- assign aspect_ratio = 1 -%}
+      {% endcase %}
+
+      <div class="image-wrapper aspect-ratio-wrapper" style="aspect-ratio:{{ aspect_ratio | default: 1 }}">
+        {{ product.featured_image | image_url: width: 500 | image_tag: class: "product-card__image" }}
+        {%- if secondary_image_hover and product.images[1] != blank -%}
+          {{ product.images[1]| image_url: width: 500 | image_tag: class: "product-card__secondary-image", loading: 'lazy' }}
+        {%- endif -%}
+      </div>
+    </a>
+  </div>
+  <div class="product-card__content">
+    <h4>{{ product.title }}</h4>
+    {% render 'price', product: product %}
+  </div>
+</div>

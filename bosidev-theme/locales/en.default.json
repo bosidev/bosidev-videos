@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "predictive_search": {
+      "empty_results_heading": "No Results",
+      "side_menu_heading": "Recommended Links",
+      "results_list_heading": "Results list"
+    }
+  },
+  "product": {
+    "general": {
+      "add_to_cart": "Add to cart",
+      "out_of_stock": "Out of stock"
+    }
+  }
+}

@@ -1,0 +1,83 @@
+<style>
+  #{{ block.id }} {
+    text-align: {{ block.settings.text_alignment }};
+
+    {% if block.settings.text_color != 'rgba(0,0,0,0)' %}
+      color: rgb({{ block.settings.text_color.red }}, {{ block.settings.text_color.green }},{{ block.settings.text_color.blue }});
+    {% endif %}
+  }
+</style>
+
+<div 
+  class="text-block {{ block.settings | class_list }}" 
+  id="{{ block.id }}"
+  {{ block.shopify_attributes }}
+>
+  {{ block.settings.content }}
+</div>
+
+{% schema %}
+{
+  "name": "Text",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "header",
+      "content": "Settings"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+    },
+    {
+      "type": "style.size_panel",
+      "id": "size",
+      "label": "Size"
+    },
+    {
+      "type": "style.spacing_panel",
+      "id": "spacing",
+      "label": "Spacing"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text"
+    }
+  ]
+}
+{% endschema %}

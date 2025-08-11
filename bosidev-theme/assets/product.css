@@ -1,0 +1,83 @@
+.product {
+  display: grid;
+}
+
+@media screen and (min-width: 768px) {
+  .product {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.product__gallery,
+.product__info {
+  padding: 2rem;
+}
+
+.product__gallery {
+  overflow: hidden;
+  width: 100%;
+}
+
+#product__gallery-thumbnails .swiper-slide {
+  width: 20%;
+}
+
+#product__gallery-thumbnails .swiper-slide-thumb-active {
+  border: 1px solid black;
+}
+
+.product__gallery-tiles {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.product__gallery-tiles .image-wrapper {
+  flex: 1 1 50%;
+}
+
+/* QUANTITY SELECTOR */
+
+.quantity-selector {
+  align-items: center;
+  height: 100%;
+  display: grid;
+  width: 150px;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.quantity-selector .input {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.quantity-selector__button {
+  height: 100%;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid black;
+}
+
+#quantity-minus {
+  border-right: none;
+}
+
+#quantity-plus {
+  border-left: none;
+}
+
+/* SWATCHES */
+
+.swatch[selected] {
+  background-color: rgb(var(--text));
+  color: rgb(var(--background-primary));
+}
+
+.swatch__button {
+  padding: 1rem;
+  border: 1px solid rgba(var(--border-color));
+  cursor: pointer;
+}

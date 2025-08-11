@@ -1,0 +1,248 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 0;
+  height: 100%;
+}
+
+.header__menu {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.header__menu-list {
+  align-items: center;
+  gap: var(--list-gap);
+}
+
+.header__menu-list-close {
+  border-bottom: 1px solid rgba(var(--text), 0.1);
+  display: flex;
+  gap: var(--list-gap);
+  align-items: center;
+}
+
+.header__menu-list-close .icon {
+  transform: rotate(180deg);
+}
+
+.header__dropdown-menu {
+  position: relative;
+  padding: var(--box-padding);
+}
+
+/* MEGA MENU */
+
+mega-menu {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.header__mega-menu-wrapper {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(100%);
+  transition: all 0.3s ease;
+  background-color: lightgrey;
+  display: flex;
+  gap: 3rem;
+}
+
+.header__mega-menu {
+  max-width: 1400px;
+  width: 100%;
+  justify-content: space-between;
+  margin: auto;
+  padding: 100px;
+}
+
+.header__menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: var(--menu-item-padding);
+  white-space: nowrap;
+}
+
+.header__menu-item details {
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .header__menu-item {
+    cursor: pointer;
+    position: relative;
+  }
+}
+
+.details-open > .drawer,
+.details-open > .drawer__layer {
+  transform: translate(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.header__menu-item:hover a {
+  text-decoration: underline;
+}
+
+.hover-buffer {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: calc((var(--header-height) / 2));
+  background-color: transparent;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 1;
+}
+
+.hover-buffer.active {
+  pointer-events: auto; /* Enable hover */
+  opacity: 1; /* Make it visible when active */
+}
+
+.header__icons {
+  display: flex;
+  gap: var(--list-gap);
+}
+
+.header__promotions {
+  display: flex;
+  gap: var(--list-gap);
+}
+
+@media screen and (min-width: 768px) {
+  .header__promotions {
+    width: 40%;
+  }
+}
+
+.promotion-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--list-gap);
+}
+
+/* DROPDOWN MENU */
+
+.header__dropdown-menu-wrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: lightgrey;
+  z-index: 2;
+  bottom: 0;
+  left: var(--menu-item-padding);
+  transform: translateY(100%);
+}
+
+.header__grand-sub-menu-list {
+  background-color: lightgrey;
+  padding: var(--box-padding);
+  right: 0;
+  top: 0;
+  transform: translateX(100%);
+  border-left: 1px solid black;
+  height: 100%;
+}
+
+/* MOBILE NAVIGATION */
+
+.header__navigation-drawer .header__menu-list {
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.header__navigation-drawer .header__menu-item {
+  padding: 10px 0;
+}
+
+.closing .header__navigation-layer,
+.header__navigation-layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: rgb(var(--background-primary));
+  z-index: 2;
+  opacity: 1;
+  display: block;
+  transform: translate(100%);
+  transition: all 0.3s ease;
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* BOTTOM BAR */
+
+.header__bottom-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.header__bottom-bar {
+  padding: 20px;
+}
+
+.details-content {
+  position: absolute;
+}
+
+.details-content--top {
+  top: 0;
+}
+
+.details-content--bottom {
+  bottom: 0;
+}
+
+.details-content--off {
+  transform: translateY(-100%);
+}
+
+/* ASIDE */
+
+.header__aside,
+.header__switcher {
+  display: flex;
+  gap: var(--list-gap);
+}
+
+/* PREDICTIVE SEARCH */
+
+.predictive-search {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(100%);
+  transition: all 0.3s ease;
+  background-color: lightgrey;
+}
+
+.predictive-search__wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+}
+
+#predictive-search-results li {
+  font-size: 0.8rem;
+}
+
+.predictive-search__ressources {
+  display: grid;
+  grid-template-columns: 20% 80%;
+}
