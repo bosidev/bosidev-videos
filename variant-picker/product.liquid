@@ -1,0 +1,143 @@
+{% comment %}
+  This section is used in the product template to render product page with
+  media, content, and add-to-cart form.
+
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/product
+{% endcomment %}
+
+{{ 'product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'variant-picker.js' | asset_url }}" defer></script>
+
+<div class="product">
+  <div class="product-images">
+    {%- if product.has_only_default_variant -%}
+      {{ product.featured_image | image_url: width: 1000 | image_tag: class: 'product-image' }}
+    {%- else -%}
+      {{ product.selected_or_first_available_variant.image | image_url: width: 1000 | image_tag: class: 'product-image' }}
+    {%- endif -%}
+  </div>
+  <div class="product-form">
+    {% form 'product', product %}
+      <div class="product-content">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'title' %}
+              <h1>{{ product.title }}</h1>
+
+            {% when 'price' %}
+              <div class="product-info__price-container">
+                {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
+                  <span class="product-info__price text--highlight">{{ product.selected_or_first_available_variant.price | money }}</span>
+                  <span class="product-info__compare-at-price text--strike text--subdued">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+                {% else %}
+                  <span class="product-info__price">{{ product.selected_or_first_available_variant.price | money }}</span>
+                {% endif %}
+              </div>
+
+            {% when 'inventory' %}
+              <span class="product-info__inventory">Inventory: {{ product.selected_or_first_available_variant.inventory_quantity }}</span>
+
+            {% when 'add_to_cart' %}
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <input type="hidden" name="quantity" value="1">
+              <button 
+                type="submit" 
+                class="button {% unless product.selected_or_first_available_variant.available %}button--disabled{% endunless %}"
+                {% unless product.selected_or_first_available_variant.available %}
+                  disabled
+                {% endunless %}
+              >
+                {% if product.selected_or_first_available_variant.available %}
+                  Add to cart
+                {% else %}
+                  Sold out
+                {% endif %}
+              </button>
+
+            {%  when 'variant_picker' %}
+              {%- unless product.has_only_default_variant -%}
+                <variant-selector class="product-content__variants" data-section-id="{{ section.id }}">
+                  {% for option in product.options_with_values %}
+                    <fieldset class="product-form__option">
+                      <legend class="product-form__option-name">
+                        {{ option.name }}
+                      </legend>
+                      <div class="product-form__option-values {% if option.name == "Color" %}product-form__option-values--color{% endif %}">
+                        {% for value in option.values %}
+                          {% if option.name == "Color" %}
+                            {% if value.swatch.color %}
+                              <div class="product-form__option-value {% unless value.variant.available %}product-form__option-value--unavailable{% endunless %}">
+                                <input id="{{ option.name }}-{{ value }}" type="radio" name="{{ option.name }}" value="{{ value.variant.id }}" {% if option.selected_value == value %}checked{% endif %} class="visibility-hidden">
+                                <label for="{{ option.name }}-{{ value }}" style="background-color: {{ value.swatch.color }}"></label>
+                              </div>
+                            {% else %}
+                              <div class="product-form__option-value {% unless value.variant.available %}product-form__option-value--unavailable{% endunless %}">
+                                <input id="{{ option.name }}-{{ value }}" type="radio" name="{{ option.name }}" value="{{ value.variant.id }}" {% if option.selected_value == value %}checked{% endif %} class="visibility-hidden">
+                                <label for="{{ option.name }}-{{ value }}" style="background-image: url({{ value.swatch.image | image_url: width: 100 }})"></label>
+                              </div>
+                            {% endif %}
+                          {% else %}
+                          <div class="product-form__option-value {% unless value.variant.available %}product-form__option-value--unavailable{% endunless %}">
+                              <input id="{{ option.name }}-{{ value }}" type="radio" name="{{ option.name }}" value="{{ value.variant.id }}" {% if option.selected_value == value %}checked{% endif %} class="visibility-hidden">
+                              <label for="{{ option.name }}-{{ value }}">{{ value }}</label>
+                            </div>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    </fieldset>
+                  {% endfor %}
+                </variant-selector>
+              {%- endunless -%}
+          {% endcase %}
+        {% endfor %}
+      </div>
+    {% endform %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_payment_button",
+      "label": "Show payment button",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        }
+      ]
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "settings": []
+    },
+    {
+      "type": "inventory",
+      "name": "Inventory",
+      "settings": []
+    },
+    {
+      "type": "add_to_cart",
+      "name": "Add to cart",
+      "settings": []
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "settings": []
+    }
+  ]
+}
+{% endschema %}
