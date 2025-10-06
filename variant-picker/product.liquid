@@ -7,6 +7,7 @@
 
 {{ 'product.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'variant-picker.js' | asset_url }}" defer></script>
+<script src="{{ 'quantity-selector.js' | asset_url }}" defer></script>
 
 <div class="product">
   <div class="product-images">
@@ -88,7 +89,19 @@
                   {% endfor %}
                 </variant-selector>
               {%- endunless -%}
-          {% endcase %}
+
+            {% when 'quantity_selector' %}
+              {% comment %} 
+                This is not part of the video but I added it to the project to make the quantity selector work with the variant picker.
+                Be ware though that this is not a production ready solution and may not work for all cases. 
+              {% endcomment %}
+
+              <quantity-selector class="quantity-selector" data-max="{{ product.selected_or_first_available_variant.inventory_quantity }}">
+                <button type="button" class="quantity-selector__button" data-quantity-minus>-</button>
+                <span class="quantity-selector__value" data-quantity-display>1</span>
+                <button type="button" class="quantity-selector__button" data-quantity-plus>+</button>
+              </quantity-selector>
+          {% endcase %} 
         {% endfor %}
       </div>
     {% endform %}
@@ -136,6 +149,11 @@
     {
       "type": "variant_picker",
       "name": "Variant picker",
+      "settings": []
+    },
+    {
+      "type": "quantity_selector",
+      "name": "Quantity selector",
       "settings": []
     }
   ]

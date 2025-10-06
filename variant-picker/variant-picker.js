@@ -30,12 +30,26 @@ class VariantSelector extends HTMLElement {
         return response.text();
       })
       .then((data) => {
+        const currentQuantity = document.querySelector(
+          "quantity-selector__value"
+        )
+          ? document.querySelector("quantity-selector__value").textContent
+          : null;
         const tempDiv = document.createElement("div");
         tempDiv.innerHTML = data;
+
         document.querySelector(".product-content").innerHTML =
           tempDiv.querySelector(".product-content").innerHTML;
         document.querySelector(".product-images").innerHTML =
           tempDiv.querySelector(".product-images").innerHTML;
+
+        if (currentQuantity) {
+          document.querySelector("quantity-selector__value").textContent =
+            currentQuantity;
+          document.querySelector(
+            'form[action="/cart/add"] input[name="quantity"]'
+          ).value = currentQuantity;
+        }
 
         const newUrl = new URL(url, window.location.origin);
         newUrl.searchParams.delete("section_id");
